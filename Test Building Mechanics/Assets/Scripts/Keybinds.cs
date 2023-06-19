@@ -38,8 +38,7 @@ public class Keybinds : MonoBehaviour
         {
             raycastBuildingScript.MoveObject();
         }
-
-        if (Input.GetKeyDown(destroyObjectKey))
+        else if (Input.GetKeyDown(destroyObjectKey))
         {
             raycastBuildingScript.DestroyObject();
         }
