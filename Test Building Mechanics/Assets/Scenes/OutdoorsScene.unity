@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2158.6926, g: 2263.307, b: 3286.8755, a: 1}
+  m_IndirectSpecularColor: {r: 2158.6682, g: 2259.9944, b: 3117.2544, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -123,6 +123,58 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &20732726
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 20732728}
+  - component: {fileID: 20732729}
+  m_Layer: 0
+  m_Name: Keybinds
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &20732728
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 20732726}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &20732729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 20732726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7ca7df25773ca641b5a1556bbc3dfab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  raycastBuildingScript: {fileID: 1153698779}
+  toggleGridKey: 103
+  rotateLeftKey: 113
+  rotateRightKey: 101
+  moveObjectKey: 109
+  destroyObjectKey: 120
+  buildBlueprintKey: 0
+  deselectBlueprintKey: 1
 --- !u!1 &157207112
 GameObject:
   m_ObjectHideFlags: 0
@@ -485,7 +537,7 @@ RectTransform:
   m_Children:
   - {fileID: 1508104885}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -661,20 +713,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e0d358b02299c348a50fc4e6ef762a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  keybinds: {fileID: 1827863794}
+  keybinds: {fileID: 20732729}
   prefabBlueprints:
   - {fileID: 4476643067962520068, guid: b4779e12446d4dc42888f0821adeaaf4, type: 3}
   - {fileID: 6202956313570775154, guid: 5385580320544804592af9ecb111bf2c, type: 3}
   - {fileID: 1599814931579534215, guid: 8e0f0e90036fa7d47b215538b09de23a, type: 3}
-  isBlueprintFollowingCursor: 0
-  isGridSnap: 0
-  gridRotationDegreeAmount: 45
-  gridSize: 1
-  blueprintRotationSpeed: 100
   solidMaterial: {fileID: 2100000, guid: b79a1f1a27f045a4094c5e2e92a92b80, type: 2}
   blueprintMaterial: {fileID: 2100000, guid: 8362020eb527ae847afc847dce248d05, type: 2}
   blueprintErrorMaterial: {fileID: 2100000, guid: dd337270f73a17a478738cfa95a57cf1,
     type: 2}
+  isBlueprintFollowingCursor: 0
+  isGridSnap: 0
+  gridRotationDegreeAmount: 45
+  rayDistance: 5
+  gridSize: 1
+  blueprintRotationSpeed: 100
 --- !u!1 &1467695955
 GameObject:
   m_ObjectHideFlags: 0
@@ -1144,57 +1197,6 @@ MonoBehaviour:
       enableFptlForForwardOpaque: 0
       enableBigTilePrepass: 0
       isFptlEnabled: 0
---- !u!1 &1827863793
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1827863795}
-  - component: {fileID: 1827863794}
-  m_Layer: 0
-  m_Name: Keybinds
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1827863794
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1827863793}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7ca7df25773ca641b5a1556bbc3dfab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  raycastBuildingScript: {fileID: 1153698779}
-  buildKey: 98
-  toggleGridKey: 103
-  placeBlueprintKey: 316
-  deselectBlueprintKey: 317
-  rotateLeftKey: 113
-  rotateRightKey: 101
---- !u!4 &1827863795
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1827863793}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2013410473
 GameObject:
   m_ObjectHideFlags: 1

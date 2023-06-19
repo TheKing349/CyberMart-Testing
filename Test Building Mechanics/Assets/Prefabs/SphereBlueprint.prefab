@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 5618809271940036926}
   m_Layer: 2
   m_Name: SphereBlueprint
-  m_TagString: Clone
+  m_TagString: Blueprint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -147,8 +147,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0aa2275ba97708a4588ed5284655e935, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canBuildBlueprint: 1
   solidMaterial: {fileID: 2100000, guid: b79a1f1a27f045a4094c5e2e92a92b80, type: 2}
   blueprintMaterial: {fileID: 2100000, guid: 8362020eb527ae847afc847dce248d05, type: 2}
   blueprintErrorMaterial: {fileID: 2100000, guid: dd337270f73a17a478738cfa95a57cf1,
     type: 2}
+  canBuildBlueprint: 1
+  isSolidObject: 0

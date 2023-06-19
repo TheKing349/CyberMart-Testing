@@ -6,12 +6,13 @@ public class Keybinds : MonoBehaviour
 {
     public RaycastBuilding raycastBuildingScript;
 
-    public KeyCode buildKey;
     public KeyCode toggleGridKey;
-    public KeyCode placeBlueprintKey;
-    public KeyCode deselectBlueprintKey;
     public KeyCode rotateLeftKey;
     public KeyCode rotateRightKey;
+    public KeyCode moveObjectKey;
+    public KeyCode destroyObjectKey;
+    public int buildBlueprintKey;
+    public int deselectBlueprintKey;
 
     void Update()
     {
@@ -28,21 +29,26 @@ public class Keybinds : MonoBehaviour
             raycastBuildingScript.SelectBlueprint(2);
         }
 
-        if (Input.GetKeyDown(buildKey))
+        if (Input.GetKeyDown(toggleGridKey))
+        {
+            raycastBuildingScript.ToggleGridSnap();
+        }
+
+        if (Input.GetKeyDown(moveObjectKey))
+        {
+            raycastBuildingScript.MoveObject();
+        }
+
+        if (Input.GetKeyDown(destroyObjectKey))
+        {
+            raycastBuildingScript.DestroyObject();
+        }
+
+        if (Input.GetMouseButtonDown(buildBlueprintKey))
         {
             raycastBuildingScript.BuildBlueprint();
         }
-
-        if (Input.GetKeyDown(toggleGridKey))
-        {
-            raycastBuildingScript.isGridSnap = !raycastBuildingScript.isGridSnap;
-        }
-
-        if (Input.GetKeyDown(placeBlueprintKey))
-        {
-            raycastBuildingScript.PlaceBlueprint();
-        }
-        else if (Input.GetKeyDown(deselectBlueprintKey))
+        else if (Input.GetMouseButtonDown(deselectBlueprintKey))
         {
             raycastBuildingScript.DeselectBlueprint();
         }
