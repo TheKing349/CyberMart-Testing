@@ -48,9 +48,9 @@ public class RaycastBuilding : MonoBehaviour
         }
     }
 
-    public void RotateBlueprint(string position)
+    public void RotateBlueprint(string direction)
     {
-        if (position == "left")
+        if (direction == "left")
         {
             if (!isGridSnap)
             {
@@ -61,7 +61,7 @@ public class RaycastBuilding : MonoBehaviour
                 clone.transform.eulerAngles += new Vector3(0, gridRotationDegreeAmount, 0);
             }
         }
-        else if (position == "right")
+        else if (direction == "right")
         {
             if (!isGridSnap)
             {
@@ -71,12 +71,7 @@ public class RaycastBuilding : MonoBehaviour
             {
                 clone.transform.eulerAngles += new Vector3(0, -gridRotationDegreeAmount, 0);
             }
-
         }
-    }
-
-    public void RotateBlueprintRight()
-    {
     }
 
     public void SelectBlueprint(int prefabNumber)
