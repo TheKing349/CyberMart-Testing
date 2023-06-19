@@ -8,20 +8,19 @@ public class RaycastBuilding : MonoBehaviour
      * Destroy build
      * move build
      * Fixed Distance???
-     * Put keybinds in Inspector
-     * 
      */
+    public Keybinds keybinds;
     private CanBuild canBuild;
 
     private GameObject clone;
     public GameObject[] prefabBlueprints;
 
-    public bool isBlueprintFollowingCursor = false;
-    private bool isGridSnap = false;
+    [HideInInspector] public bool isBlueprintFollowingCursor = false;
+    [HideInInspector] public bool isGridSnap = false;
     private bool done = false;
 
     private int currentPrefabInt = -1;
-    public int gridRotationDegreeAmount = 15;
+    public int gridRotationDegreeAmount = 45;
     public float gridSize = 1f;
     public float blueprintRotationSpeed = 100f;
 
@@ -31,83 +30,95 @@ public class RaycastBuilding : MonoBehaviour
 
     void Update()
     {
-        if ((Input.GetKeyDown(KeyCode.Alpha1)) && (!isBlueprintFollowingCursor))
+        if (clone != null)
         {
-            currentPrefabInt = 0;
-            done = false;
-            isBlueprintFollowingCursor = true;
-            clone = Instantiate(prefabBlueprints[currentPrefabInt]);
-        }
-        else if ((Input.GetKeyDown(KeyCode.Alpha2)) && (!isBlueprintFollowingCursor))
-        {
-            currentPrefabInt = 1;
-            done = false;
-            isBlueprintFollowingCursor = true;
-            clone = Instantiate(prefabBlueprints[currentPrefabInt]);
-        }
-        else if ((Input.GetKeyDown(KeyCode.Alpha3)) && (!isBlueprintFollowingCursor))
-        {
-            currentPrefabInt = 2;
-            done = false;
-            isBlueprintFollowingCursor = true;
-            clone = Instantiate(prefabBlueprints[currentPrefabInt]);
-        }
+            if (isBlueprintFollowingCursor)
+            {
+                BlueprintToCursor();
 
-        if ((Input.GetMouseButtonDown(0)) && (isBlueprintFollowingCursor) && (canBuild.canBuildBlueprint))
+                if (Input.GetKeyDown(keybinds.rotateLeftKey))
+                {
+                    RotateBlueprint("left");
+                }
+                else if (Input.GetKeyDown(keybinds.rotateRightKey))
+                {
+                    RotateBlueprint("right");
+                }
+            }
+        }
+    }
+
+    public void RotateBlueprint(string position)
+    {
+        if (position == "left")
+        {
+            if (!isGridSnap)
+            {
+                clone.transform.Rotate(Vector3.up * blueprintRotationSpeed * Time.deltaTime);
+            }
+            else
+            {
+                clone.transform.eulerAngles += new Vector3(0, gridRotationDegreeAmount, 0);
+            }
+        }
+        else if (position == "right")
+        {
+            if (!isGridSnap)
+            {
+                clone.transform.Rotate(Vector3.down * blueprintRotationSpeed * Time.deltaTime);
+            }
+            else
+            {
+                clone.transform.eulerAngles += new Vector3(0, -gridRotationDegreeAmount, 0);
+            }
+
+        }
+    }
+
+    public void RotateBlueprintRight()
+    {
+    }
+
+    public void SelectBlueprint(int prefabNumber)
+    {
+        currentPrefabInt = prefabNumber;
+        if (!isBlueprintFollowingCursor)
+        {
+            done = false;
+            isBlueprintFollowingCursor = true;
+            clone = Instantiate(prefabBlueprints[currentPrefabInt]);
+        }
+    }
+    public void DeselectBlueprint()
+    {
+        if ((isBlueprintFollowingCursor) && (canBuild.canBuildBlueprint))
+        {
+            isBlueprintFollowingCursor = false;
+            Destroy(clone);
+        }
+    }
+
+    public void PlaceBlueprint()
+    {
+        if ((isBlueprintFollowingCursor) && (canBuild.canBuildBlueprint))
         {
             clone.layer = 0;
             done = false;
             isBlueprintFollowingCursor = false;
         }
-        if ((Input.GetMouseButtonDown(1)) && (isBlueprintFollowingCursor) && (canBuild.canBuildBlueprint))
-        {
-            isBlueprintFollowingCursor = false;
-            Destroy(clone);
-        }
-
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            BuildBlueprint();
-        }
-
-        if (Input.GetKeyDown(KeyCode.G)) {
-            isGridSnap = !isGridSnap;
-            Debug.Log("Grid Snap " + (isGridSnap ? "On" : "Off"));
-        }
-
-        if (clone != null)
-        {
-            canBuild = clone.GetComponent<CanBuild>();
-            if (isBlueprintFollowingCursor)
-            {
-                BlueprintToCursor();
-
-                if (!isGridSnap)
-                {
-                    if (Input.GetKey(KeyCode.Q))
-                    {
-                        clone.transform.Rotate(Vector3.up * blueprintRotationSpeed * Time.deltaTime);
-                    }
-                    else if (Input.GetKey(KeyCode.E))
-                    {
-                        clone.transform.Rotate(Vector3.down * blueprintRotationSpeed * Time.deltaTime);
-                    }
-                }
-                else
-                {
-                    if (Input.GetKeyDown(KeyCode.Q))
-                    {
-                        clone.transform.eulerAngles += new Vector3(0, gridRotationDegreeAmount, 0);
-                    }
-                    else if (Input.GetKeyDown(KeyCode.E))
-                    {
-                        clone.transform.eulerAngles += new Vector3(0, -gridRotationDegreeAmount, 0);
-                    }
-                }
-            }
-        }
     }
-    void BlueprintToCursor()
+
+    public void DestroyBlueprint()
+    {
+        //Destroys already placed blueprint
+    }
+
+    public void MoveBlueprint()
+    {
+        //Moves already placed blueprint
+    }
+
+    public void BlueprintToCursor()
     {
         Vector3 mousePos = Input.mousePosition;
         Ray ray = Camera.main.ScreenPointToRay(mousePos);
@@ -151,7 +162,7 @@ public class RaycastBuilding : MonoBehaviour
         }
     }
 
-    void BuildBlueprint()
+    public void BuildBlueprint()
     {
         Vector3 mousePos = Input.mousePosition;
         Ray ray = Camera.main.ScreenPointToRay(mousePos);
