@@ -4,132 +4,97 @@ using UnityEngine;
 
 public class RaycastBuilding : MonoBehaviour
 {
-    /* TO DO: 
-     * Destroy build
-     * move build
-     * Fixed Distance???
-     * Put keybinds in Inspector
-     * 
-     */
+    public Keybinds keybinds;
     private CanBuild canBuild;
 
-    private GameObject clone;
+    private GameObject blueprint;
     public GameObject[] prefabBlueprints;
 
-    public bool isBlueprintFollowingCursor = false;
-    private bool isGridSnap = false;
-    private bool done = false;
-
-    private int currentPrefabInt = -1;
-    public int gridRotationDegreeAmount = 15;
-    public float gridSize = 1f;
-    public float blueprintRotationSpeed = 100f;
+    private MeshRenderer blueprintMeshRenderer;
 
     public Material solidMaterial;
     public Material blueprintMaterial;
     public Material blueprintErrorMaterial;
 
+    [HideInInspector] public bool isBlueprintFollowingCursor = false;
+    [HideInInspector] public bool isGridSnap = false;
+
+    private int currentPrefabInt = -1;
+    public int gridRotationDegreeAmount = 45;
+    public float rayDistance = 3.0f;
+    public float gridSize = 1f;
+    public float blueprintRotationSpeed = 100f;
+
     void Update()
     {
-        if ((Input.GetKeyDown(KeyCode.Alpha1)) && (!isBlueprintFollowingCursor))
+        if (blueprint != null)
         {
-            currentPrefabInt = 0;
-            done = false;
-            isBlueprintFollowingCursor = true;
-            clone = Instantiate(prefabBlueprints[currentPrefabInt]);
-        }
-        else if ((Input.GetKeyDown(KeyCode.Alpha2)) && (!isBlueprintFollowingCursor))
-        {
-            currentPrefabInt = 1;
-            done = false;
-            isBlueprintFollowingCursor = true;
-            clone = Instantiate(prefabBlueprints[currentPrefabInt]);
-        }
-        else if ((Input.GetKeyDown(KeyCode.Alpha3)) && (!isBlueprintFollowingCursor))
-        {
-            currentPrefabInt = 2;
-            done = false;
-            isBlueprintFollowingCursor = true;
-            clone = Instantiate(prefabBlueprints[currentPrefabInt]);
-        }
+            canBuild = blueprint.GetComponent<CanBuild>();
+            blueprintMeshRenderer = blueprint.GetComponent<MeshRenderer>();
 
-        if ((Input.GetMouseButtonDown(0)) && (isBlueprintFollowingCursor) && (canBuild.canBuildBlueprint))
-        {
-            clone.layer = 0;
-            done = false;
-            isBlueprintFollowingCursor = false;
-        }
-        if ((Input.GetMouseButtonDown(1)) && (isBlueprintFollowingCursor) && (canBuild.canBuildBlueprint))
-        {
-            isBlueprintFollowingCursor = false;
-            Destroy(clone);
-        }
-
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            BuildBlueprint();
-        }
-
-        if (Input.GetKeyDown(KeyCode.G)) {
-            isGridSnap = !isGridSnap;
-            Debug.Log("Grid Snap " + (isGridSnap ? "On" : "Off"));
-        }
-
-        if (clone != null)
-        {
-            canBuild = clone.GetComponent<CanBuild>();
             if (isBlueprintFollowingCursor)
             {
                 BlueprintToCursor();
-
                 if (!isGridSnap)
                 {
-                    if (Input.GetKey(KeyCode.Q))
+                    if (Input.GetKey(keybinds.rotateLeftKey))
                     {
-                        clone.transform.Rotate(Vector3.up * blueprintRotationSpeed * Time.deltaTime);
+                        RotateBlueprint(0);
                     }
-                    else if (Input.GetKey(KeyCode.E))
+                    else if (Input.GetKey(keybinds.rotateRightKey))
                     {
-                        clone.transform.Rotate(Vector3.down * blueprintRotationSpeed * Time.deltaTime);
+                        RotateBlueprint(1);
                     }
                 }
                 else
                 {
-                    if (Input.GetKeyDown(KeyCode.Q))
+                    if (Input.GetKeyDown(keybinds.rotateLeftKey))
                     {
-                        clone.transform.eulerAngles += new Vector3(0, gridRotationDegreeAmount, 0);
+                        RotateBlueprint(0);
                     }
-                    else if (Input.GetKeyDown(KeyCode.E))
+                    else if (Input.GetKeyDown(keybinds.rotateRightKey))
                     {
-                        clone.transform.eulerAngles += new Vector3(0, -gridRotationDegreeAmount, 0);
+                        RotateBlueprint(1);
                     }
                 }
             }
         }
     }
-    void BlueprintToCursor()
-    {
-        Vector3 mousePos = Input.mousePosition;
-        Ray ray = Camera.main.ScreenPointToRay(mousePos);
 
-        if ((Physics.Raycast(ray, out RaycastHit hit)) && (hit.collider != null) && (hit.transform.CompareTag("Ground")))
+    public void SelectBlueprint(int prefabNumber)
+    {
+        currentPrefabInt = prefabNumber;
+        if (!isBlueprintFollowingCursor)
+        {
+            isBlueprintFollowingCursor = true;
+            blueprint = Instantiate(prefabBlueprints[currentPrefabInt]);
+            blueprint.transform.position = transform.position;
+            blueprint.transform.localScale = new Vector3(blueprint.transform.localScale.x - 0.00001f, blueprint.transform.localScale.y, blueprint.transform.localScale.z - 0.00001f);
+        }
+    }
+
+    public void BlueprintToCursor()
+    {
+        RaycastHitTest(false, "", out bool hitSuccessful, out RaycastHit hit);
+
+        if (hitSuccessful)
         {
             Bounds b = prefabBlueprints[currentPrefabInt].GetComponent<MeshFilter>().sharedMesh.bounds;
-            Vector3 lowerCenter = new Vector3(b.center.x * clone.transform.localScale.x, -b.extents.y * clone.transform.localScale.y - 0.01f, b.center.z * clone.transform.localScale.z);
+            Vector3 lowerCenter = new Vector3(b.center.x * blueprint.transform.localScale.x, -b.extents.y * blueprint.transform.localScale.y - 0.01f, b.center.z * blueprint.transform.localScale.z);
             Vector3 newPos = hit.point - lowerCenter;
 
             if (!isGridSnap)
             {
-                clone.transform.position = newPos;
+                blueprint.transform.position = newPos;
             }
             else
             {
                 newPos = new Vector3(Mathf.Round(newPos.x / gridSize) * gridSize, newPos.y, Mathf.Round(newPos.z / gridSize) * gridSize);
 
-                float rotationY = clone.transform.eulerAngles.y;
+                float rotationY = blueprint.transform.eulerAngles.y;
                 if (currentPrefabInt == 2)
                 {
-                    float offset = clone.transform.localScale.x / 2;
+                    float offset = blueprint.transform.localScale.x / 2;
                     if ((Mathf.Approximately(rotationY, 0f)) || (Mathf.Approximately(rotationY, 180f)))
                     {
                         newPos.x += (rotationY > 90f && rotationY < 270f) ? -offset : offset;
@@ -139,31 +104,102 @@ public class RaycastBuilding : MonoBehaviour
                         newPos.z += (rotationY > 180f) ? offset : -offset;
                     }
                 }
-
-                clone.transform.position = newPos;
-
-                if (!done)
-                {
-                    clone.transform.localScale = new Vector3(clone.transform.localScale.x - 0.00001f, clone.transform.localScale.y - 0.00001f, clone.transform.localScale.z - 0.00001f);
-                    done = true;
-                }
+                blueprint.transform.position = newPos;
             }
         }
     }
 
-    void BuildBlueprint()
+    public void DeselectBlueprint()
+    {
+        if ((isBlueprintFollowingCursor) && (canBuild.canBuildBlueprint))
+        {
+            isBlueprintFollowingCursor = false;
+            Destroy(blueprint);
+        }
+    }
+
+    public void ToggleGridSnap()
+    {
+        isGridSnap = !isGridSnap;
+        if (blueprint != null)
+        {
+            blueprint.transform.eulerAngles = Vector3.zero;
+        }
+    }
+
+    public void RotateBlueprint(int direction)
+    {
+        //left
+        if ((direction == 0) && (!isGridSnap))
+        {
+            blueprint.transform.Rotate(blueprintRotationSpeed * Time.deltaTime * Vector3.up);
+        }
+        else if (direction == 0)
+        {
+            blueprint.transform.eulerAngles += new Vector3(0, gridRotationDegreeAmount, 0);
+        }
+        //right
+        else if ((direction == 1) && (!isGridSnap))
+        {
+            blueprint.transform.Rotate(blueprintRotationSpeed * Time.deltaTime * Vector3.down);
+        }
+        else if (direction == 1)
+        {
+            blueprint.transform.eulerAngles += new Vector3(0, -gridRotationDegreeAmount, 0);
+        }
+    }
+
+    public void BuildBlueprint()
+    {
+        if ((isBlueprintFollowingCursor) && (canBuild.canBuildBlueprint))
+        {
+            blueprint.layer = 0;
+            isBlueprintFollowingCursor = false;
+            canBuild = blueprint.GetComponent<CanBuild>();
+            blueprintMeshRenderer = blueprint.GetComponent<MeshRenderer>();
+            if (canBuild.canBuildBlueprint)
+            {
+                blueprintMeshRenderer.material = solidMaterial;
+                blueprint.GetComponent<MeshCollider>().isTrigger = false;
+                blueprint.tag = "SolidObject";
+                canBuild.isSolidObject = true;
+            }
+        }
+    }
+
+    public void MoveObject()
+    {
+        RaycastHitTest(true, "SolidObject", out bool hitSuccessful, out RaycastHit hit);
+        if (hitSuccessful)
+        {
+            blueprint.layer = 2;
+            blueprintMeshRenderer.material = blueprintMaterial;
+            blueprint.GetComponent<MeshCollider>().isTrigger = true;
+            isBlueprintFollowingCursor = true;
+        }
+    }
+
+    public void DestroyObject()
+    {
+        RaycastHitTest(true, "SolidObject", out bool hitSuccessful, out RaycastHit hit);
+        if (hitSuccessful) {
+            Destroy(hit.transform.gameObject);
+        }
+    }
+
+
+
+    public void RaycastHitTest(bool isTagNeeded, string tag, out bool hitSuccessful, out RaycastHit hit)
     {
         Vector3 mousePos = Input.mousePosition;
         Ray ray = Camera.main.ScreenPointToRay(mousePos);
-
-        if ((Physics.Raycast(ray, out RaycastHit hit)) && (hit.collider != null) && (hit.transform.CompareTag("Clone")))
+        if (isTagNeeded)
         {
-            canBuild = hit.transform.GetComponent<CanBuild>();
-            if (canBuild.canBuildBlueprint)
-            {
-                hit.transform.GetComponent<MeshRenderer>().material = solidMaterial;
-                hit.transform.GetComponent<MeshCollider>().isTrigger = false;
-            }
+            hitSuccessful = ((Physics.Raycast(ray, out hit, rayDistance)) && (hit.collider != null) && (hit.transform.CompareTag(tag)));
+        }
+        else
+        {
+            hitSuccessful = ((Physics.Raycast(ray, out hit, rayDistance)) && (hit.collider != null));
         }
     }
 }

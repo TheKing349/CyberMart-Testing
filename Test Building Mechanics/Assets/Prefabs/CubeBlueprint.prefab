@@ -16,10 +16,10 @@ GameObject:
   - component: {fileID: 8534840540414235520}
   m_Layer: 2
   m_Name: CubeBlueprint
-  m_TagString: Clone
+  m_TagString: Blueprint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &6739291474603211610
 Transform:
@@ -129,7 +129,7 @@ MeshCollider:
     m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
-  m_ProvidesContacts: 1
+  m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
   m_Convex: 1
@@ -147,8 +147,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0aa2275ba97708a4588ed5284655e935, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canBuildBlueprint: 1
   solidMaterial: {fileID: 2100000, guid: b79a1f1a27f045a4094c5e2e92a92b80, type: 2}
   blueprintMaterial: {fileID: 2100000, guid: 8362020eb527ae847afc847dce248d05, type: 2}
   blueprintErrorMaterial: {fileID: 2100000, guid: dd337270f73a17a478738cfa95a57cf1,
     type: 2}
+  canBuildBlueprint: 1
+  isSolidObject: 0
