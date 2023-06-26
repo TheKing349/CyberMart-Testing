@@ -1,21 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Keybinds : MonoBehaviour
 {
     public RaycastBuilding raycastBuildingScript;
+    public GameTimeScale gameTimeScale;
+
+    public KeyCode playerJumpKey;
 
     public KeyCode toggleGridKey;
     public KeyCode rotateLeftKey;
     public KeyCode rotateRightKey;
     public KeyCode moveObjectKey;
     public KeyCode destroyObjectKey;
+
+    public KeyCode pauseResumeKey;
+
     public int buildBlueprintKey;
     public int deselectBlueprintKey;
 
     void Update()
     {
+        #region BUILDING_PLACING
+        /*Using Buttons from a Canvas, don't need keybinds
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             raycastBuildingScript.SelectBlueprint(0);
@@ -28,6 +37,7 @@ public class Keybinds : MonoBehaviour
         {
             raycastBuildingScript.SelectBlueprint(2);
         }
+        */
 
         if (Input.GetKeyDown(toggleGridKey))
         {
@@ -51,5 +61,21 @@ public class Keybinds : MonoBehaviour
         {
             raycastBuildingScript.DeselectBlueprint();
         }
+        #endregion
+
+        #region PAUSE_RESUME
+        if (Input.GetKeyDown(pauseResumeKey))
+        {
+            if (gameTimeScale.isGamePaused)
+            {
+                gameTimeScale.ResumeGame();
+            }
+            else
+            {
+                gameTimeScale.PauseGame();
+            }
+        }
+        #endregion
+
     }
 }
