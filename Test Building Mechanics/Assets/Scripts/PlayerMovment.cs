@@ -1,9 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovment : MonoBehaviour
 {
+    public Keybinds keybindsScript;
+
     public float walkingSpeed = 7.5f;
     public float runningSpeed = 11.5f;
     public float jumpSpeed = 8.0f;
@@ -39,7 +39,7 @@ public class PlayerMovment : MonoBehaviour
         float movementDirectionY = moveDirection.y;
         moveDirection = (forward * curSpeedX) + (right * curSpeedY);
 
-        if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
+        if ((Input.GetKey(keybindsScript.playerJumpKey)) && (canMove) && (characterController.isGrounded))
         {
             moveDirection.y = jumpSpeed;
         }

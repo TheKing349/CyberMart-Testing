@@ -1,15 +1,13 @@
-using Unity.Loading;
-using UnityEditor.Rendering;
 using UnityEngine;
 
 public class RaycastBuilding : MonoBehaviour
 {
     public Keybinds keybinds;
-    private CanBuild canBuild;
+    public CanvasHandler canvasHandler;
 
     private GameObject blueprint;
     public GameObject[] prefabBlueprints;
-
+    private CanBuild canBuild;
     private MeshRenderer blueprintMeshRenderer;
 
     public Material solidMaterial;
@@ -20,12 +18,14 @@ public class RaycastBuilding : MonoBehaviour
     [HideInInspector] public bool isGridSnap = false;
 
     private int currentPrefabInt = -1;
+    private const float epsilon = 0.00001f;
+
     public int gridRotationDegreeAmount = 45;
     public float rayDistance = 3.0f;
     public float gridSize = 1f;
     public float blueprintRotationSpeed = 100f;
 
-    void Update()
+    private void Update()
     {
         if (blueprint != null)
         {
@@ -35,27 +35,13 @@ public class RaycastBuilding : MonoBehaviour
             if (isBlueprintFollowingCursor)
             {
                 BlueprintToCursor();
-                if (!isGridSnap)
+                if (!isGridSnap && (Input.GetKey(keybinds.rotateLeftKey) || Input.GetKey(keybinds.rotateRightKey)))
                 {
-                    if (Input.GetKey(keybinds.rotateLeftKey))
-                    {
-                        RotateBlueprint(0);
-                    }
-                    else if (Input.GetKey(keybinds.rotateRightKey))
-                    {
-                        RotateBlueprint(1);
-                    }
+                    RotateBlueprint(Input.GetKey(keybinds.rotateLeftKey) ? 0 : 1);
                 }
-                else
+                else if (isGridSnap && (Input.GetKeyDown(keybinds.rotateLeftKey) || Input.GetKeyDown(keybinds.rotateRightKey)))
                 {
-                    if (Input.GetKeyDown(keybinds.rotateLeftKey))
-                    {
-                        RotateBlueprint(0);
-                    }
-                    else if (Input.GetKeyDown(keybinds.rotateRightKey))
-                    {
-                        RotateBlueprint(1);
-                    }
+                    RotateBlueprint(Input.GetKeyDown(keybinds.rotateLeftKey) ? 0 : 1);
                 }
             }
         }
@@ -63,31 +49,32 @@ public class RaycastBuilding : MonoBehaviour
 
     public void SelectBlueprint(int prefabNumber)
     {
+        canvasHandler.ToggleBuildingCanvas();
+
         currentPrefabInt = prefabNumber;
         if (!isBlueprintFollowingCursor)
         {
             isBlueprintFollowingCursor = true;
             blueprint = Instantiate(prefabBlueprints[currentPrefabInt]);
             blueprint.transform.position = transform.position;
-            blueprint.transform.localScale = new Vector3(blueprint.transform.localScale.x - 0.00001f, blueprint.transform.localScale.y, blueprint.transform.localScale.z - 0.00001f);
+            Vector3 scale = blueprint.transform.localScale;
+            scale.x -= epsilon;
+            scale.z -= epsilon;
+            blueprint.transform.localScale = scale;
         }
     }
 
     public void BlueprintToCursor()
     {
-        RaycastHitTest(false, "", out bool hitSuccessful, out RaycastHit hit);
+        bool hitSuccessful = RaycastHitTest(false, "", out RaycastHit hit);
 
         if (hitSuccessful)
         {
             Bounds b = prefabBlueprints[currentPrefabInt].GetComponent<MeshFilter>().sharedMesh.bounds;
-            Vector3 lowerCenter = new Vector3(b.center.x * blueprint.transform.localScale.x, -b.extents.y * blueprint.transform.localScale.y - 0.01f, b.center.z * blueprint.transform.localScale.z);
+            Vector3 lowerCenter = new Vector3(b.center.x * blueprint.transform.localScale.x, -b.extents.y * blueprint.transform.localScale.y - epsilon, b.center.z * blueprint.transform.localScale.z);
             Vector3 newPos = hit.point - lowerCenter;
 
-            if (!isGridSnap)
-            {
-                blueprint.transform.position = newPos;
-            }
-            else
+            if (isGridSnap)
             {
                 newPos = new Vector3(Mathf.Round(newPos.x / gridSize) * gridSize, newPos.y, Mathf.Round(newPos.z / gridSize) * gridSize);
 
@@ -104,14 +91,14 @@ public class RaycastBuilding : MonoBehaviour
                         newPos.z += (rotationY > 180f) ? offset : -offset;
                     }
                 }
-                blueprint.transform.position = newPos;
             }
+            blueprint.transform.position = newPos;
         }
     }
 
     public void DeselectBlueprint()
     {
-        if ((isBlueprintFollowingCursor) && (canBuild.canBuildBlueprint))
+        if (isBlueprintFollowingCursor && canBuild.canBuildBlueprint)
         {
             isBlueprintFollowingCursor = false;
             Destroy(blueprint);
@@ -129,77 +116,79 @@ public class RaycastBuilding : MonoBehaviour
 
     public void RotateBlueprint(int direction)
     {
-        //left
-        if ((direction == 0) && (!isGridSnap))
+        if (direction == 0)
         {
-            blueprint.transform.Rotate(blueprintRotationSpeed * Time.deltaTime * Vector3.up);
-        }
-        else if (direction == 0)
-        {
-            blueprint.transform.eulerAngles += new Vector3(0, gridRotationDegreeAmount, 0);
-        }
-        //right
-        else if ((direction == 1) && (!isGridSnap))
-        {
-            blueprint.transform.Rotate(blueprintRotationSpeed * Time.deltaTime * Vector3.down);
+            if (!isGridSnap)
+                blueprint.transform.Rotate(blueprintRotationSpeed * Time.deltaTime * Vector3.up);
+            else
+                blueprint.transform.eulerAngles += new Vector3(0, gridRotationDegreeAmount, 0);
         }
         else if (direction == 1)
         {
-            blueprint.transform.eulerAngles += new Vector3(0, -gridRotationDegreeAmount, 0);
+            if (!isGridSnap)
+                blueprint.transform.Rotate(blueprintRotationSpeed * Time.deltaTime * Vector3.down);
+            else
+                blueprint.transform.eulerAngles += new Vector3(0, -gridRotationDegreeAmount, 0);
         }
     }
 
     public void BuildBlueprint()
     {
-        if ((isBlueprintFollowingCursor) && (canBuild.canBuildBlueprint))
+        if (isBlueprintFollowingCursor && canBuild.canBuildBlueprint)
         {
-            blueprint.layer = 0;
-            isBlueprintFollowingCursor = false;
             canBuild = blueprint.GetComponent<CanBuild>();
             blueprintMeshRenderer = blueprint.GetComponent<MeshRenderer>();
             if (canBuild.canBuildBlueprint)
             {
+                blueprint.layer = 0;
+                isBlueprintFollowingCursor = false;
                 blueprintMeshRenderer.material = solidMaterial;
+                canBuild.isSolidObject = true;
                 blueprint.GetComponent<MeshCollider>().isTrigger = false;
                 blueprint.tag = "SolidObject";
-                canBuild.isSolidObject = true;
             }
         }
     }
 
     public void MoveObject()
     {
-        RaycastHitTest(true, "SolidObject", out bool hitSuccessful, out RaycastHit hit);
+        bool hitSuccessful = RaycastHitTest(true, "SolidObject", out RaycastHit hit);
         if (hitSuccessful)
         {
+            blueprint = hit.transform.gameObject;
+            blueprintMeshRenderer = hit.transform.gameObject.GetComponent<MeshRenderer>();
+
             blueprint.layer = 2;
-            blueprintMeshRenderer.material = blueprintMaterial;
-            blueprint.GetComponent<MeshCollider>().isTrigger = true;
             isBlueprintFollowingCursor = true;
+            blueprintMeshRenderer.material = blueprintMaterial;
+            canBuild.isSolidObject = false;
+            blueprint.GetComponent<MeshCollider>().isTrigger = true;
+            blueprint.tag = "Blueprint";
         }
     }
 
     public void DestroyObject()
     {
-        RaycastHitTest(true, "SolidObject", out bool hitSuccessful, out RaycastHit hit);
-        if (hitSuccessful) {
+        bool hitSuccessful = RaycastHitTest(true, "SolidObject", out RaycastHit hit);
+        if (hitSuccessful)
+        {
             Destroy(hit.transform.gameObject);
         }
     }
 
-
-
-    public void RaycastHitTest(bool isTagNeeded, string tag, out bool hitSuccessful, out RaycastHit hit)
+    public bool RaycastHitTest(bool isTagNeeded, string tag, out RaycastHit hit)
     {
         Vector3 mousePos = Input.mousePosition;
         Ray ray = Camera.main.ScreenPointToRay(mousePos);
+        bool hitSuccessful;
         if (isTagNeeded)
         {
-            hitSuccessful = ((Physics.Raycast(ray, out hit, rayDistance)) && (hit.collider != null) && (hit.transform.CompareTag(tag)));
+            hitSuccessful = Physics.Raycast(ray, out hit, rayDistance) && hit.collider != null && hit.transform.CompareTag(tag);
         }
         else
         {
-            hitSuccessful = ((Physics.Raycast(ray, out hit, rayDistance)) && (hit.collider != null));
+            hitSuccessful = Physics.Raycast(ray, out hit, rayDistance) && hit.collider != null;
         }
+        return hitSuccessful;
     }
 }

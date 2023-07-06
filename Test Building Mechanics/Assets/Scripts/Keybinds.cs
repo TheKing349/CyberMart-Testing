@@ -1,32 +1,31 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Keybinds : MonoBehaviour
 {
+    public CanvasHandler canvasHandler;
     public RaycastBuilding raycastBuildingScript;
+    public GameTimeScale gameTimeScale;
 
+    public KeyCode playerJumpKey;
+
+    public KeyCode toggleBuildingCanvasKey;
     public KeyCode toggleGridKey;
     public KeyCode rotateLeftKey;
     public KeyCode rotateRightKey;
     public KeyCode moveObjectKey;
     public KeyCode destroyObjectKey;
+
+    public KeyCode pauseResumeKey;
+
     public int buildBlueprintKey;
     public int deselectBlueprintKey;
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        #region BUILDING_PLACING
+        if (Input.GetKeyDown(toggleBuildingCanvasKey))
         {
-            raycastBuildingScript.SelectBlueprint(0);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            raycastBuildingScript.SelectBlueprint(1);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            raycastBuildingScript.SelectBlueprint(2);
+            canvasHandler.ToggleBuildingCanvas();
         }
 
         if (Input.GetKeyDown(toggleGridKey))
@@ -51,5 +50,13 @@ public class Keybinds : MonoBehaviour
         {
             raycastBuildingScript.DeselectBlueprint();
         }
+        #endregion
+
+        #region PAUSE_RESUME
+        if (Input.GetKeyDown(pauseResumeKey))
+        {
+            canvasHandler.TogglePauseCanvas();
+        }
+        #endregion
     }
 }
