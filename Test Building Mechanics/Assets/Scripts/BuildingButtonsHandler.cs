@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,14 +5,15 @@ public class BuildingButtonsHandler : MonoBehaviour
 {
     public RaycastBuilding raycastBuildingScript;
 
-    public Button buildingCubeButton;
-    public Button buildingSphereButton;
-    public Button buildingWallButton;
+    public Transform buildingMenu;
 
     private void Start()
     {
-        buildingCubeButton.onClick.AddListener(() => raycastBuildingScript.SelectBlueprint(0));
-        buildingSphereButton.onClick.AddListener(() => raycastBuildingScript.SelectBlueprint(1));
-        buildingWallButton.onClick.AddListener(() => raycastBuildingScript.SelectBlueprint(2));
+        for (int i = 0; i < buildingMenu.childCount; i++)
+        {
+            int closureIndex = i;
+            Button child = buildingMenu.GetChild(i).GetComponent<Button>();
+            child.onClick.AddListener( () => raycastBuildingScript.SelectBlueprint(closureIndex));
+        }
     }
 }

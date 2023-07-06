@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5046685955610183459}
   - component: {fileID: 1387466355889378898}
   - component: {fileID: 3834824064025313577}
-  - component: {fileID: 8534840540414235520}
+  - component: {fileID: 5285151913233212715}
   m_Layer: 2
   m_Name: CubeBlueprint
   m_TagString: Blueprint
@@ -135,7 +135,7 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &8534840540414235520
+--- !u!114 &5285151913233212715
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

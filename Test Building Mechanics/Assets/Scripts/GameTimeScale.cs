@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameTimeScale : MonoBehaviour
@@ -8,35 +6,37 @@ public class GameTimeScale : MonoBehaviour
     public GameObject player;
 
     public GameObject pauseMenuCanvas;
-    private Camera pauseMenuCamera;
+    public Camera pausedCamera;
     public GameObject cursor;
 
-    private void Start()
+    public void ToggleGameState(GameObject selectedCanvas)
     {
-        pauseMenuCamera = pauseMenuCanvas.GetComponentInChildren<Camera>();   
-    }
+        if (!isGamePaused)
+        {
+            Time.timeScale = 0.0f;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
 
-    public void PauseGame()
-    {
-        Time.timeScale = 0.0f;
+            isGamePaused = true;
+            pausedCamera.transform.SetPositionAndRotation(player.GetComponentInChildren<Camera>().transform.position, player.GetComponentInChildren<Camera>().transform.rotation);
+            player.SetActive(false);
+            cursor.SetActive(false);
 
-        isGamePaused = true;
-        pauseMenuCamera.transform.position = player.GetComponentInChildren<Camera>().transform.position;
-        pauseMenuCamera.transform.rotation = player.GetComponentInChildren<Camera>().transform.rotation;
-        player.SetActive(false);
-        cursor.SetActive(false);
+            selectedCanvas.SetActive(true);
+            pausedCamera.gameObject.SetActive(true);
+        }
+        else
+        {
+            Time.timeScale = 1.0f;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
 
-        pauseMenuCanvas.SetActive(true);
-    }
+            isGamePaused = false;
+            player.SetActive(true);
+            cursor.SetActive(true);
 
-    public void ResumeGame()
-    {
-        Time.timeScale = 1.0f;
-
-        isGamePaused = false;
-        player.SetActive(true);
-        cursor.SetActive(true);
-
-        pauseMenuCanvas.SetActive(false);
+            selectedCanvas.SetActive(false);
+            pausedCamera.gameObject.SetActive(false);
+        }
     }
 }

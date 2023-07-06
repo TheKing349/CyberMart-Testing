@@ -1,15 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class Keybinds : MonoBehaviour
 {
+    public CanvasHandler canvasHandler;
     public RaycastBuilding raycastBuildingScript;
     public GameTimeScale gameTimeScale;
 
     public KeyCode playerJumpKey;
 
+    public KeyCode toggleBuildingCanvasKey;
     public KeyCode toggleGridKey;
     public KeyCode rotateLeftKey;
     public KeyCode rotateRightKey;
@@ -24,20 +23,10 @@ public class Keybinds : MonoBehaviour
     void Update()
     {
         #region BUILDING_PLACING
-        /*Using Buttons from a Canvas, don't need keybinds
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(toggleBuildingCanvasKey))
         {
-            raycastBuildingScript.SelectBlueprint(0);
+            canvasHandler.ToggleBuildingCanvas();
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            raycastBuildingScript.SelectBlueprint(1);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            raycastBuildingScript.SelectBlueprint(2);
-        }
-        */
 
         if (Input.GetKeyDown(toggleGridKey))
         {
@@ -66,16 +55,8 @@ public class Keybinds : MonoBehaviour
         #region PAUSE_RESUME
         if (Input.GetKeyDown(pauseResumeKey))
         {
-            if (gameTimeScale.isGamePaused)
-            {
-                gameTimeScale.ResumeGame();
-            }
-            else
-            {
-                gameTimeScale.PauseGame();
-            }
+            canvasHandler.TogglePauseCanvas();
         }
         #endregion
-
     }
 }
