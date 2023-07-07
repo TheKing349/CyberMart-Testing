@@ -2,46 +2,48 @@ using UnityEngine;
 
 public class RaycastBuilding : MonoBehaviour
 {
-    public Keybinds keybinds;
-    public CanvasHandler canvasHandler;
+    public Keybinds keybindsScript;
+    public CanvasHandler canvasHandlerScript;
+    private CanBuild canBuildScript;
 
-    private GameObject blueprint;
     public GameObject[] prefabBlueprints;
-    private CanBuild canBuild;
+    private GameObject blueprint;
+
     private MeshRenderer blueprintMeshRenderer;
 
     public Material solidMaterial;
     public Material blueprintMaterial;
     public Material blueprintErrorMaterial;
 
-    [HideInInspector] public bool isBlueprintFollowingCursor = false;
     [HideInInspector] public bool isGridSnap = false;
-
-    private int currentPrefabInt = -1;
-    private const float epsilon = 0.00001f;
+    [HideInInspector] public bool isBlueprintFollowingCursor = false;
 
     public int gridRotationDegreeAmount = 45;
+    private int currentPrefabInt = -1;
+
     public float rayDistance = 3.0f;
     public float gridSize = 1f;
     public float blueprintRotationSpeed = 100f;
+    private const float epsilon = 0.00005f;
+
 
     private void Update()
     {
         if (blueprint != null)
         {
-            canBuild = blueprint.GetComponent<CanBuild>();
+            canBuildScript = blueprint.GetComponent<CanBuild>();
             blueprintMeshRenderer = blueprint.GetComponent<MeshRenderer>();
 
             if (isBlueprintFollowingCursor)
             {
                 BlueprintToCursor();
-                if (!isGridSnap && (Input.GetKey(keybinds.rotateLeftKey) || Input.GetKey(keybinds.rotateRightKey)))
+                if (!isGridSnap && (Input.GetKey(keybindsScript.rotateLeftKey) || Input.GetKey(keybindsScript.rotateRightKey)))
                 {
-                    RotateBlueprint(Input.GetKey(keybinds.rotateLeftKey) ? 0 : 1);
+                    RotateBlueprint(Input.GetKey(keybindsScript.rotateLeftKey) ? 0 : 1);
                 }
-                else if (isGridSnap && (Input.GetKeyDown(keybinds.rotateLeftKey) || Input.GetKeyDown(keybinds.rotateRightKey)))
+                else if (isGridSnap && (Input.GetKeyDown(keybindsScript.rotateLeftKey) || Input.GetKeyDown(keybindsScript.rotateRightKey)))
                 {
-                    RotateBlueprint(Input.GetKeyDown(keybinds.rotateLeftKey) ? 0 : 1);
+                    RotateBlueprint(Input.GetKeyDown(keybindsScript.rotateLeftKey) ? 0 : 1);
                 }
             }
         }
@@ -49,7 +51,7 @@ public class RaycastBuilding : MonoBehaviour
 
     public void SelectBlueprint(int prefabNumber)
     {
-        canvasHandler.ToggleBuildingCanvas();
+        canvasHandlerScript.ToggleBuildingCanvas();
 
         currentPrefabInt = prefabNumber;
         if (!isBlueprintFollowingCursor)
@@ -58,8 +60,7 @@ public class RaycastBuilding : MonoBehaviour
             blueprint = Instantiate(prefabBlueprints[currentPrefabInt]);
             blueprint.transform.position = transform.position;
             Vector3 scale = blueprint.transform.localScale;
-            scale.x -= epsilon;
-            scale.z -= epsilon;
+            scale -= new Vector3(epsilon, epsilon, epsilon);
             blueprint.transform.localScale = scale;
         }
     }
@@ -71,16 +72,16 @@ public class RaycastBuilding : MonoBehaviour
         if (hitSuccessful)
         {
             Bounds b = prefabBlueprints[currentPrefabInt].GetComponent<MeshFilter>().sharedMesh.bounds;
-            Vector3 lowerCenter = new Vector3(b.center.x * blueprint.transform.localScale.x, -b.extents.y * blueprint.transform.localScale.y - epsilon, b.center.z * blueprint.transform.localScale.z);
+            Vector3 lowerCenter = new Vector3(b.center.x * blueprint.transform.localScale.x, (-b.extents.y * blueprint.transform.localScale.y) - 0.0025f, b.center.z * blueprint.transform.localScale.z);
             Vector3 newPos = hit.point - lowerCenter;
 
             if (isGridSnap)
             {
-                newPos = new Vector3(Mathf.Round(newPos.x / gridSize) * gridSize, newPos.y, Mathf.Round(newPos.z / gridSize) * gridSize);
+                newPos = new Vector3(Mathf.Round(newPos.x / gridSize) * gridSize, Mathf.Round(newPos.y / gridSize) * gridSize, Mathf.Round(newPos.z / gridSize) * gridSize);
 
-                float rotationY = blueprint.transform.eulerAngles.y;
                 if (currentPrefabInt == 2)
                 {
+                    float rotationY = blueprint.transform.eulerAngles.y;
                     float offset = blueprint.transform.localScale.x / 2;
                     if ((Mathf.Approximately(rotationY, 0f)) || (Mathf.Approximately(rotationY, 180f)))
                     {
@@ -98,7 +99,7 @@ public class RaycastBuilding : MonoBehaviour
 
     public void DeselectBlueprint()
     {
-        if (isBlueprintFollowingCursor && canBuild.canBuildBlueprint)
+        if (isBlueprintFollowingCursor && canBuildScript.canBuildBlueprint)
         {
             isBlueprintFollowingCursor = false;
             Destroy(blueprint);
@@ -134,16 +135,16 @@ public class RaycastBuilding : MonoBehaviour
 
     public void BuildBlueprint()
     {
-        if (isBlueprintFollowingCursor && canBuild.canBuildBlueprint)
+        if (isBlueprintFollowingCursor && canBuildScript.canBuildBlueprint)
         {
-            canBuild = blueprint.GetComponent<CanBuild>();
+            canBuildScript = blueprint.GetComponent<CanBuild>();
             blueprintMeshRenderer = blueprint.GetComponent<MeshRenderer>();
-            if (canBuild.canBuildBlueprint)
+            if (canBuildScript.canBuildBlueprint)
             {
                 blueprint.layer = 0;
                 isBlueprintFollowingCursor = false;
                 blueprintMeshRenderer.material = solidMaterial;
-                canBuild.isSolidObject = true;
+                canBuildScript.isSolidObject = true;
                 blueprint.GetComponent<MeshCollider>().isTrigger = false;
                 blueprint.tag = "SolidObject";
             }
@@ -161,7 +162,7 @@ public class RaycastBuilding : MonoBehaviour
             blueprint.layer = 2;
             isBlueprintFollowingCursor = true;
             blueprintMeshRenderer.material = blueprintMaterial;
-            canBuild.isSolidObject = false;
+            canBuildScript.isSolidObject = false;
             blueprint.GetComponent<MeshCollider>().isTrigger = true;
             blueprint.tag = "Blueprint";
         }

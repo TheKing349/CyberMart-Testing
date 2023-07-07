@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2159.9924, g: 2263.762, b: 3286.5435, a: 1}
+  m_IndirectSpecularColor: {r: 2158.2727, g: 2262.8616, b: 3286.5552, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -167,9 +167,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7ca7df25773ca641b5a1556bbc3dfab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvasHandler: {fileID: 1505261950}
+  canvasHandlerScript: {fileID: 1505261950}
   raycastBuildingScript: {fileID: 1153698779}
-  gameTimeScale: {fileID: 894610697}
+  gameTimeScaleScript: {fileID: 894610697}
   playerJumpKey: 32
   toggleBuildingCanvasKey: 98
   toggleGridKey: 103
@@ -1374,9 +1374,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isGamePaused: 0
   player: {fileID: 1153698771}
+  cursor: {fileID: 1508104884}
   pauseMenuCanvas: {fileID: 1767424599}
   pausedCamera: {fileID: 87027025}
-  cursor: {fileID: 1508104884}
 --- !u!4 &894610698
 Transform:
   m_ObjectHideFlags: 0
@@ -1820,7 +1820,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1153698771}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1845,9 +1845,9 @@ MonoBehaviour:
   runningSpeed: 15
   jumpSpeed: 8
   gravity: 20
-  playerCamera: {fileID: 1823688466}
   lookSpeed: 5
   lookXLimit: 55
+  playerCamera: {fileID: 1823688466}
   canMove: 1
 --- !u!143 &1153698778
 CharacterController:
@@ -1887,8 +1887,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e0d358b02299c348a50fc4e6ef762a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  keybinds: {fileID: 20732729}
-  canvasHandler: {fileID: 1505261950}
+  keybindsScript: {fileID: 20732729}
+  canvasHandlerScript: {fileID: 1505261950}
   prefabBlueprints:
   - {fileID: 4476643067962520068, guid: b4779e12446d4dc42888f0821adeaaf4, type: 3}
   - {fileID: 6202956313570775154, guid: 5385580320544804592af9ecb111bf2c, type: 3}
@@ -2002,7 +2002,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1467695955}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 10, y: 10, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2053,7 +2053,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 576a4f9f383952a4d87acbb757546bd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameTimeScale: {fileID: 894610697}
+  gameTimeScaleScript: {fileID: 894610697}
   pauseMenuCanvas: {fileID: 1767424599}
   buildingMenuCanvas: {fileID: 989051000}
 --- !u!1 &1508104884
