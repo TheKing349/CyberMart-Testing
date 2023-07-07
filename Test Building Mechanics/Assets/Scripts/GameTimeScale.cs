@@ -3,11 +3,12 @@ using UnityEngine;
 public class GameTimeScale : MonoBehaviour
 {
     [HideInInspector] public bool isGamePaused = false;
-    public GameObject player;
 
-    public GameObject pauseMenuCanvas;
-    public Camera pausedCamera;
+    public GameObject player;
     public GameObject cursor;
+    public GameObject pauseMenuCanvas;
+
+    public Camera pausedCamera;
 
     public void ToggleGameState(GameObject selectedCanvas)
     {

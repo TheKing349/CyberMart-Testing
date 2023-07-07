@@ -9,7 +9,7 @@ public class CanBuild : MonoBehaviour
     [HideInInspector] public bool canBuildBlueprint = true;
     [HideInInspector] public bool isSolidObject = false;
 
-    private void OnTriggerEnter()
+    private void OnTriggerStay()
     {
         CannotBuildBlueprint();
     }
@@ -18,7 +18,7 @@ public class CanBuild : MonoBehaviour
         CanBuildBlueprint();
     }
 
-    private void OnCollisionEnter()
+    private void OnCollisionStay()
     {
         CannotBuildBlueprint();
     }
@@ -29,7 +29,6 @@ public class CanBuild : MonoBehaviour
 
     private void CannotBuildBlueprint()
     {
-        Debug.Log("ENTERED: CANNOT");
         if (!isSolidObject)
         {
             canBuildBlueprint = false;
@@ -39,7 +38,6 @@ public class CanBuild : MonoBehaviour
 
     private void CanBuildBlueprint()
     {
-        Debug.Log("EXITED: CAN");
         if (!isSolidObject)
         {
             canBuildBlueprint = true;

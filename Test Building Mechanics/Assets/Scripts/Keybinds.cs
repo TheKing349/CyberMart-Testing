@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class Keybinds : MonoBehaviour
 {
-    public CanvasHandler canvasHandler;
+    public CanvasHandler canvasHandlerScript;
     public RaycastBuilding raycastBuildingScript;
-    public GameTimeScale gameTimeScale;
+    public GameTimeScale gameTimeScaleScript;
 
     public KeyCode playerJumpKey;
 
@@ -23,9 +23,9 @@ public class Keybinds : MonoBehaviour
     void Update()
     {
         #region BUILDING_PLACING
-        if (Input.GetKeyDown(toggleBuildingCanvasKey))
+        if ((Input.GetKeyDown(toggleBuildingCanvasKey)) && (!raycastBuildingScript.isBlueprintFollowingCursor))
         {
-            canvasHandler.ToggleBuildingCanvas();
+            canvasHandlerScript.ToggleBuildingCanvas();
         }
 
         if (Input.GetKeyDown(toggleGridKey))
@@ -55,7 +55,7 @@ public class Keybinds : MonoBehaviour
         #region PAUSE_RESUME
         if (Input.GetKeyDown(pauseResumeKey))
         {
-            canvasHandler.TogglePauseCanvas();
+            canvasHandlerScript.TogglePauseCanvas();
         }
         #endregion
     }
