@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CanvasHandler : MonoBehaviour
@@ -11,11 +9,17 @@ public class CanvasHandler : MonoBehaviour
 
     public void TogglePauseCanvas()
     {
-        gameTimeScaleScript.ToggleGameState(pauseMenuCanvas);
+        if (!buildingMenuCanvas.activeSelf)
+        {
+            gameTimeScaleScript.ToggleGameState(pauseMenuCanvas);
+        }
     }
 
     public void ToggleBuildingCanvas()
     {
-        gameTimeScaleScript.ToggleGameState(buildingMenuCanvas);
+        if (!pauseMenuCanvas.activeSelf)
+        {
+            gameTimeScaleScript.ToggleGameState(buildingMenuCanvas);
+        }
     }
 }

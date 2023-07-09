@@ -28,28 +28,32 @@ public class Keybinds : MonoBehaviour
             canvasHandlerScript.ToggleBuildingCanvas();
         }
 
-        if (Input.GetKeyDown(toggleGridKey))
+        if (!gameTimeScaleScript.isGamePaused)
         {
-            raycastBuildingScript.ToggleGridSnap();
+            if (Input.GetKeyDown(toggleGridKey))
+            {
+                raycastBuildingScript.ToggleGridSnap();
+            }
+
+            if (Input.GetKeyDown(moveObjectKey))
+            {
+                raycastBuildingScript.MoveObject();
+            }
+            else if (Input.GetKeyDown(destroyObjectKey))
+            {
+                raycastBuildingScript.DestroyObject();
+            }
+
+            if (Input.GetMouseButtonDown(buildBlueprintKey))
+            {
+                raycastBuildingScript.BuildBlueprint();
+            }
+            else if (Input.GetMouseButtonDown(deselectBlueprintKey))
+            {
+                raycastBuildingScript.DeselectBlueprint();
+            }
         }
 
-        if (Input.GetKeyDown(moveObjectKey))
-        {
-            raycastBuildingScript.MoveObject();
-        }
-        else if (Input.GetKeyDown(destroyObjectKey))
-        {
-            raycastBuildingScript.DestroyObject();
-        }
-
-        if (Input.GetMouseButtonDown(buildBlueprintKey))
-        {
-            raycastBuildingScript.BuildBlueprint();
-        }
-        else if (Input.GetMouseButtonDown(deselectBlueprintKey))
-        {
-            raycastBuildingScript.DeselectBlueprint();
-        }
         #endregion
 
         #region PAUSE_RESUME
