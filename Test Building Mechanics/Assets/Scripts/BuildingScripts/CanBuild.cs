@@ -1,5 +1,4 @@
 using UnityEngine;
-
 public class CanBuild : MonoBehaviour
 {
     public Material solidMaterial;
@@ -9,7 +8,7 @@ public class CanBuild : MonoBehaviour
     [HideInInspector] public bool canBuildBlueprint = true;
     [HideInInspector] public bool isSolidObject = false;
 
-    private void OnTriggerStay()
+    private void OnTriggerEnter()
     {
         CannotBuildBlueprint();
     }
@@ -18,7 +17,7 @@ public class CanBuild : MonoBehaviour
         CanBuildBlueprint();
     }
 
-    private void OnCollisionStay()
+    private void OnCollisionEnter()
     {
         CannotBuildBlueprint();
     }

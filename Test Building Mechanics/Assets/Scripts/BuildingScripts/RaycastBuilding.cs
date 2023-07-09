@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class RaycastBuilding : MonoBehaviour
@@ -6,8 +9,9 @@ public class RaycastBuilding : MonoBehaviour
     public CanvasHandler canvasHandlerScript;
     private CanBuild canBuildScript;
 
-    public GameObject[] prefabBlueprints;
     private GameObject blueprint;
+
+    [HideInInspector] public List<GameObject> prefabBlueprints;
 
     private MeshRenderer blueprintMeshRenderer;
 
@@ -24,10 +28,22 @@ public class RaycastBuilding : MonoBehaviour
     public float rayDistance = 3.0f;
     public float gridSize = 1f;
     public float blueprintRotationSpeed = 100f;
-    private const float epsilon = 0.00005f;
+    private const float epsilon = 0.005f;
 
+    private void Awake()
+    {
+        Object[] prefabs;
+        prefabs = Resources.LoadAll("Prefabs/Buildings", typeof(GameObject)).Cast<GameObject>().ToArray();
 
-    private void Update()
+        int index = 0;
+        foreach (var prefab in prefabs)
+        {
+            prefabBlueprints.Add(prefab.GameObject());
+            index++;
+        }
+    }
+
+    private void FixedUpdate()
     {
         if (blueprint != null)
         {
@@ -77,21 +93,7 @@ public class RaycastBuilding : MonoBehaviour
 
             if (isGridSnap)
             {
-                newPos = new Vector3(Mathf.Round(newPos.x / gridSize) * gridSize, Mathf.Round(newPos.y / gridSize) * gridSize, Mathf.Round(newPos.z / gridSize) * gridSize);
-
-                if (currentPrefabInt == 2)
-                {
-                    float rotationY = blueprint.transform.eulerAngles.y;
-                    float offset = blueprint.transform.localScale.x / 2;
-                    if ((Mathf.Approximately(rotationY, 0f)) || (Mathf.Approximately(rotationY, 180f)))
-                    {
-                        newPos.x += (rotationY > 90f && rotationY < 270f) ? -offset : offset;
-                    }
-                    else
-                    {
-                        newPos.z += (rotationY > 180f) ? offset : -offset;
-                    }
-                }
+                newPos = new Vector3(Mathf.Round(newPos.x / gridSize) * gridSize , Mathf.Round(newPos.y / gridSize) * gridSize, Mathf.Round(newPos.z / gridSize) * gridSize);
             }
             blueprint.transform.position = newPos;
         }
@@ -99,7 +101,7 @@ public class RaycastBuilding : MonoBehaviour
 
     public void DeselectBlueprint()
     {
-        if (isBlueprintFollowingCursor && canBuildScript.canBuildBlueprint)
+        if (isBlueprintFollowingCursor)
         {
             isBlueprintFollowingCursor = false;
             Destroy(blueprint);
@@ -138,12 +140,17 @@ public class RaycastBuilding : MonoBehaviour
         if (isBlueprintFollowingCursor && canBuildScript.canBuildBlueprint)
         {
             canBuildScript = blueprint.GetComponent<CanBuild>();
-            blueprintMeshRenderer = blueprint.GetComponent<MeshRenderer>();
             if (canBuildScript.canBuildBlueprint)
             {
+                blueprintMeshRenderer = blueprint.GetComponent<MeshRenderer>();
+
+                blueprintMeshRenderer.material = solidMaterial;
+                Vector3 scale = blueprint.transform.localScale;
+                scale += new Vector3(epsilon, epsilon, epsilon);
+
                 blueprint.layer = 0;
                 isBlueprintFollowingCursor = false;
-                blueprintMeshRenderer.material = solidMaterial;
+                blueprint.transform.localScale = scale;
                 canBuildScript.isSolidObject = true;
                 blueprint.GetComponent<MeshCollider>().isTrigger = false;
                 blueprint.tag = "SolidObject";
@@ -158,6 +165,10 @@ public class RaycastBuilding : MonoBehaviour
         {
             blueprint = hit.transform.gameObject;
             blueprintMeshRenderer = hit.transform.gameObject.GetComponent<MeshRenderer>();
+
+            Vector3 scale = blueprint.transform.localScale;
+            scale -= new Vector3(epsilon, epsilon, epsilon);
+            blueprint.transform.localScale = scale;
 
             blueprint.layer = 2;
             isBlueprintFollowingCursor = true;

@@ -1,5 +1,4 @@
 using UnityEngine;
-
 public class PlayerMovment : MonoBehaviour
 {
     public Keybinds keybindsScript;
