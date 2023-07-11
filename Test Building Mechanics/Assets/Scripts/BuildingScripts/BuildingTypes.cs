@@ -7,8 +7,6 @@ public class BuildingTypes : MonoBehaviour
 
 public enum BuildingTypeDropdownEnum
 {
-    Capsule,
-    Cube,
-    Cylinder,
-    Sphere
+    Shelf,
+    Misc
 };

@@ -166,4 +166,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3f18c7e6224e4b47a40ac4a4449d892, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dropDown: 0
+  buildingTypeDropdown: 1
