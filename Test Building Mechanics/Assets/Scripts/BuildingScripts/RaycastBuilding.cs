@@ -9,26 +9,24 @@ public class RaycastBuilding : MonoBehaviour
     public CanvasHandler canvasHandlerScript;
     private CanBuild canBuildScript;
 
+    public BuildingDataHandler buildingDataHandlerScript;
+
     private GameObject blueprint;
 
     [HideInInspector] public List<GameObject> prefabBlueprints;
 
     private MeshRenderer blueprintMeshRenderer;
 
-    public Material solidMaterial;
-    public Material blueprintMaterial;
-    public Material blueprintErrorMaterial;
-
     [HideInInspector] public bool isGridSnap = false;
     [HideInInspector] public bool isBlueprintFollowingCursor = false;
 
     public int gridRotationDegreeAmount = 45;
-    private int currentPrefabInt = -1;
+    [HideInInspector] public int currentPrefabInt = -1;
 
     public float rayDistance = 3.0f;
     public float gridSize = 1f;
     public float blueprintRotationSpeed = 100f;
-    private const float epsilon = 0.005f;
+    [HideInInspector] public float epsilon = 0.005f;
 
     private void Awake()
     {
@@ -102,26 +100,23 @@ public class RaycastBuilding : MonoBehaviour
 
             if ((int)blueprint.GetComponent<BuildingTypes>().buildingTypeDropdown == 0)
             {
-                if ((int)blueprint.GetComponent<BuildingTypes>().buildingTypeDropdown == 0)
+                float rotationY = blueprint.transform.eulerAngles.y;
+                float offset = 0.5f;
+
+                Vector3 wallForward = Quaternion.Euler(0, rotationY, 0) * Vector3.forward;
+                Vector3 wallRight = Quaternion.Euler(0, rotationY, 0) * Vector3.right;
+
+                newPos += wallForward * offset;
+
+                if (Mathf.Abs(Vector3.Dot(wallForward, Vector3.back)) > 0.9f && Mathf.Abs(Vector3.Dot(wallRight, Vector3.right)) < 0.1f)
                 {
-                    float rotationY = blueprint.transform.eulerAngles.y;
-                    float offset = 0.5f;
-
-                    Vector3 wallForward = Quaternion.Euler(0, rotationY, 0) * Vector3.forward;
-                    Vector3 wallRight = Quaternion.Euler(0, rotationY, 0) * Vector3.right;
-
-                    newPos += wallForward * offset;
-
-                    if (Mathf.Abs(Vector3.Dot(wallForward, Vector3.back)) > 0.9f && Mathf.Abs(Vector3.Dot(wallRight, Vector3.right)) < 0.1f)
-                    {
-                        newPos -= wallForward * offset;
-                    }
+                    newPos -= wallForward * offset;
                 }
             }
 
             if (isGridSnap)
             {
-                newPos = new Vector3(Mathf.Round(newPos.x / gridSize) * gridSize , Mathf.Round(newPos.y / gridSize) * gridSize, Mathf.Round(newPos.z / gridSize) * gridSize);
+                newPos = new Vector3(Mathf.Round(newPos.x / gridSize) * gridSize, Mathf.Round(newPos.y / gridSize) * gridSize, Mathf.Round(newPos.z / gridSize) * gridSize);
             }
             blueprint.transform.position = newPos;
         }
@@ -176,11 +171,13 @@ public class RaycastBuilding : MonoBehaviour
         if (isBlueprintFollowingCursor && canBuildScript.canBuildBlueprint)
         {
             canBuildScript = blueprint.GetComponent<CanBuild>();
+            BuildingTypes buildingTypesScript = blueprint.GetComponent<BuildingTypes>();
+
             if (canBuildScript.canBuildBlueprint)
             {
                 blueprintMeshRenderer = blueprint.GetComponent<MeshRenderer>();
 
-                blueprintMeshRenderer.material = solidMaterial;
+                blueprintMeshRenderer.material = canBuildScript.solidMaterial;
                 Vector3 scale = blueprint.transform.localScale;
                 scale += new Vector3(epsilon, epsilon, epsilon);
 
@@ -190,6 +187,8 @@ public class RaycastBuilding : MonoBehaviour
                 canBuildScript.isSolidObject = true;
                 blueprint.GetComponent<MeshCollider>().isTrigger = false;
                 blueprint.tag = "SolidObject";
+
+                buildingDataHandlerScript.AddBuilding(buildingTypesScript.prefabGuid, currentPrefabInt, blueprint.transform.position, blueprint.transform.rotation);
             }
         }
     }
@@ -208,7 +207,7 @@ public class RaycastBuilding : MonoBehaviour
 
             blueprint.layer = 2;
             isBlueprintFollowingCursor = true;
-            blueprintMeshRenderer.material = blueprintMaterial;
+            blueprintMeshRenderer.material = canBuildScript.blueprintMaterial;
             canBuildScript.isSolidObject = false;
             blueprint.GetComponent<MeshCollider>().isTrigger = true;
             blueprint.tag = "Blueprint";
@@ -220,6 +219,8 @@ public class RaycastBuilding : MonoBehaviour
         bool hitSuccessful = RaycastHitTest(true, "SolidObject", out RaycastHit hit);
         if (hitSuccessful)
         {
+            buildingDataHandlerScript.RemoveBuilding(hit.transform.GetComponent<BuildingTypes>().prefabGuid);
+
             Destroy(hit.transform.gameObject);
         }
     }

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class GameButtonsHandler : MonoBehaviour
 {
+    public DataManager dataManagerScript;
     public GameTimeScale gameTimeScaleScript;
     public RaycastBuilding raycastBuildingScript;
     public BuildingButtons buildingButtonsScript;
@@ -23,11 +24,15 @@ public class GameButtonsHandler : MonoBehaviour
 
     public void QuitToMenu()
     {
+        dataManagerScript.WriteData();
+
         SceneManager.LoadScene("MainMenuScene");
     }
 
     public void QuitGame()
     {
+        dataManagerScript.WriteData();
+
         Application.Quit();
     }
 
