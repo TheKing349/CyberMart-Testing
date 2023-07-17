@@ -4,9 +4,9 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - solidMaterial: {fileID: 2100000, guid: b79a1f1a27f045a4094c5e2e92a92b80, type: 2}
-  - blueprintMaterial: {fileID: 2100000, guid: 8362020eb527ae847afc847dce248d05, type: 2}
-  - blueprintErrorMaterial: {fileID: 2100000, guid: dd337270f73a17a478738cfa95a57cf1,
+  - solidMaterial: {fileID: 2100000, guid: 4737d2bddbe53ce4a8d8a92f9eeaadab, type: 2}
+  - blueprintMaterial: {fileID: 2100000, guid: ffb131ca74374834897fe0499999a432, type: 2}
+  - blueprintErrorMaterial: {fileID: 2100000, guid: 8306430cf0bfc81459802daba7de719d,
       type: 2}
   executionOrder: 0
   icon: {instanceID: 0}

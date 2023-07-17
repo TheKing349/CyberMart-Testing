@@ -2,8 +2,9 @@ using UnityEngine;
 
 public class Keybinds : MonoBehaviour
 {
-    public CanvasHandler canvasHandlerScript;
+    public BuildingMenuSearch buildingMenuSearchScript;
     public RaycastBuilding raycastBuildingScript;
+    public CanvasHandler canvasHandlerScript;
     public GameTimeScale gameTimeScaleScript;
 
     public KeyCode playerJumpKey;
@@ -23,7 +24,7 @@ public class Keybinds : MonoBehaviour
     void Update()
     {
         #region BUILDING_PLACING
-        if ((Input.GetKeyDown(toggleBuildingCanvasKey)) && (!raycastBuildingScript.isBlueprintFollowingCursor))
+        if ((Input.GetKeyDown(toggleBuildingCanvasKey)) && (!raycastBuildingScript.isBlueprintFollowingCursor) && (!buildingMenuSearchScript.isTyping))
         {
             canvasHandlerScript.ToggleBuildingCanvas();
         }

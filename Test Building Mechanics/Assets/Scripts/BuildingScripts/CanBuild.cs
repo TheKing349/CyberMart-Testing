@@ -1,46 +1,52 @@
 using UnityEngine;
+
 public class CanBuild : MonoBehaviour
 {
     public Material solidMaterial;
     public Material blueprintMaterial;
     public Material blueprintErrorMaterial;
 
+    private int triggerCount = 0;
+
     [HideInInspector] public bool canBuildBlueprint = true;
     [HideInInspector] public bool isSolidObject = false;
 
     private void OnTriggerEnter()
     {
-        CannotBuildBlueprint();
+        triggerCount++;
+        BuildBlueprint(false);
     }
     private void OnTriggerExit()
     {
-        CanBuildBlueprint();
+        triggerCount--;
+        BuildBlueprint(true);
     }
 
     private void OnCollisionEnter()
     {
-        CannotBuildBlueprint();
+        triggerCount++;
+        BuildBlueprint(false);
     }
     private void OnCollisionExit()
     {
-        CanBuildBlueprint();
+        triggerCount--;
+        BuildBlueprint(true);
     }
 
-    private void CannotBuildBlueprint()
+    private void BuildBlueprint(bool canBuild)
     {
         if (!isSolidObject)
         {
-            canBuildBlueprint = false;
-            transform.GetComponent<MeshRenderer>().material = blueprintErrorMaterial;
-        }
-    }
-
-    private void CanBuildBlueprint()
-    {
-        if (!isSolidObject)
-        {
-            canBuildBlueprint = true;
-            transform.GetComponent<MeshRenderer>().material = blueprintMaterial;
+            if ((canBuild) && (triggerCount == 0))
+            {
+                canBuildBlueprint = true;
+                transform.GetComponent<MeshRenderer>().material = blueprintMaterial;
+            }
+            else if (!canBuild)
+            {
+                canBuildBlueprint = false;
+                transform.GetComponent<MeshRenderer>().material = blueprintErrorMaterial;
+            }
         }
     }
 }

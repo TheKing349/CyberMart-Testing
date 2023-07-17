@@ -3,6 +3,8 @@ public class PlayerMovment : MonoBehaviour
 {
     public Keybinds keybindsScript;
 
+    public Camera playerCamera;
+
     public float walkingSpeed = 7.5f;
     public float runningSpeed = 11.5f;
     public float jumpSpeed = 8.0f;
@@ -11,7 +13,6 @@ public class PlayerMovment : MonoBehaviour
     public float lookXLimit = 45.0f;
     float rotationX = 0;
 
-    public Camera playerCamera;
 
     CharacterController characterController;
 
