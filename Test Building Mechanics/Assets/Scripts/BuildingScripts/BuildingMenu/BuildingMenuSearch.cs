@@ -10,7 +10,7 @@ public class BuildingMenuSearch : MonoBehaviour
 
     public TMP_InputField searchBar;
 
-    public bool isTyping;
+    [HideInInspector] public bool isTyping;
 
     public void OnSelectSearchBar()
     {

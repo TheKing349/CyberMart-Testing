@@ -16,11 +16,6 @@ public class BuildingDataHandler : MonoBehaviour
     [HideInInspector] public List<BuildingData> buildingDataList = new List<BuildingData>();
     public Dictionary<Guid, BuildingData> buildingDataDictionary = new Dictionary<Guid, BuildingData>();
 
-    public void Start()
-    {
-        //LoadBuildings();
-    }
-
     public void AddBuilding(Guid buildingGuid, int prefabInt, Vector3 buildingPosition, Quaternion buildingRotation)
     {
         BuildingData buildingData = new BuildingData

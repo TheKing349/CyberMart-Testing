@@ -18,6 +18,9 @@ public class DataManager : MonoBehaviour
 
     [HideInInspector] public string playerDataFilePath = "";
     [HideInInspector] public string playerDirectoryPath = "";
+
+    private bool didCreateFileDirectory;
+
     private void Awake()
     {
         settings = new JsonSerializerSettings
@@ -40,9 +43,11 @@ public class DataManager : MonoBehaviour
 
     private void Start()
     {
-        buildingDataHandlerScript.LoadBuildings();
-
-        playerDataHandlerScript.LoadPlayerStats();
+        if (!didCreateFileDirectory)
+        {
+            buildingDataHandlerScript.LoadBuildings();
+            playerDataHandlerScript.LoadPlayerStats();
+        }
 
         if (File.Exists(buildingDataFilePath))
         {
@@ -69,6 +74,8 @@ public class DataManager : MonoBehaviour
 
     public void CreateDirectoryAndFile(string directoryPath, string filePath)
     {
+        didCreateFileDirectory = true;
+
         if ((!File.Exists(filePath) && !Directory.Exists(directoryPath)))
         {
             Directory.CreateDirectory(directoryPath);
@@ -78,6 +85,10 @@ public class DataManager : MonoBehaviour
         else if (!File.Exists(filePath))
         {
             File.Create(filePath);
+        }
+        else
+        {
+            didCreateFileDirectory = false;
         }
     }
 }

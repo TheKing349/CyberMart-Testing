@@ -8,7 +8,7 @@ public class BuildingButtons : MonoBehaviour
     public RaycastBuilding raycastBuildingScript;
     public GameButtonsHandler gameButtonsHandlerScript;
 
-    public int previousBuildingType = -1;
+    [HideInInspector] public int previousBuildingType = -1;
 
     [HideInInspector] public Object buildingButtonPrefab;
 
