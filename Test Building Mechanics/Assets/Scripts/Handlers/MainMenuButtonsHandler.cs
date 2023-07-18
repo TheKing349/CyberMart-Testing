@@ -5,7 +5,16 @@ public class MainMenuButtonsHandler : MonoBehaviour
 {
     public void StartGame()
     {
-        SceneManager.LoadScene("TestBuildingMechanicsScene");
+        Indestructable.instance.prevScene = SceneManager.GetActiveScene().buildIndex;
+
+        SceneManager.LoadScene(2);
+    }
+
+    public void Settings()
+    {
+        Indestructable.instance.prevScene = SceneManager.GetActiveScene().buildIndex;
+
+        SceneManager.LoadScene(1);
     }
 
     public void QuitGame()

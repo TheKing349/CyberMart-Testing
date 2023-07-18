@@ -1,7 +1,6 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.UnityConverters;
 using Newtonsoft.Json.UnityConverters.Math;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -11,7 +10,7 @@ public class DataManager : MonoBehaviour
     public BuildingDataHandler buildingDataHandlerScript;
     public PlayerDataHandler playerDataHandlerScript;
 
-    JsonSerializerSettings settings;
+    private JsonSerializerSettings serializerSettings;
 
     [HideInInspector] public string buildingDataFilePath = "";
     [HideInInspector] public string buildingDirectoryPath = "";
@@ -23,7 +22,7 @@ public class DataManager : MonoBehaviour
 
     private void Awake()
     {
-        settings = new JsonSerializerSettings
+        serializerSettings = new JsonSerializerSettings
         {
             Converters = new[]
             {
@@ -57,19 +56,19 @@ public class DataManager : MonoBehaviour
 
     public void WriteData()
     {
-        string buildingJson = JsonConvert.SerializeObject(buildingDataHandlerScript.buildingDataList, Formatting.Indented, settings);
+        string buildingJson = JsonConvert.SerializeObject(buildingDataHandlerScript.buildingDataList, Formatting.Indented, serializerSettings);
         File.WriteAllText(buildingDataFilePath, buildingJson);
 
         playerDataHandlerScript.SavePlayerStats();
-        string playerJson = JsonConvert.SerializeObject(playerDataHandlerScript.playerData, Formatting.Indented, settings);
+        string playerJson = JsonConvert.SerializeObject(playerDataHandlerScript.playerData, Formatting.Indented, serializerSettings);
         File.WriteAllText(playerDataFilePath, playerJson);
     }
 
     public void ReadData()
     {
-        buildingDataHandlerScript.buildingDataList = JsonConvert.DeserializeObject<List<BuildingData>>(File.ReadAllText(buildingDataFilePath), settings);
+        buildingDataHandlerScript.buildingDataList = JsonConvert.DeserializeObject<List<BuildingData>>(File.ReadAllText(buildingDataFilePath), serializerSettings);
 
-        playerDataHandlerScript.playerData = JsonConvert.DeserializeObject<PlayerData>(File.ReadAllText(playerDataFilePath), settings);
+        playerDataHandlerScript.playerData = JsonConvert.DeserializeObject<PlayerData>(File.ReadAllText(playerDataFilePath), serializerSettings);
     }
 
     public void CreateDirectoryAndFile(string directoryPath, string filePath)

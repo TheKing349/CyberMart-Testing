@@ -22,11 +22,27 @@ public class GameButtonsHandler : MonoBehaviour
         gameTimeScaleScript.ToggleGameState(pauseMenuCanvas);
     }
 
+    public void Settings()
+    {
+        dataManagerScript.WriteData();
+
+        Indestructable.instance.prevScene = SceneManager.GetActiveScene().buildIndex;
+
+        ResumeGame();
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        SceneManager.LoadScene(1);
+        dataManagerScript.playerDataHandlerScript.LoadPlayerStats();
+    }
+
     public void QuitToMenu()
     {
         dataManagerScript.WriteData();
 
-        SceneManager.LoadScene("MainMenuScene");
+        Indestructable.instance.prevScene = SceneManager.GetActiveScene().buildIndex;
+
+        SceneManager.LoadScene(0);
     }
 
     public void QuitGame()

@@ -18,6 +18,16 @@ public class BuildingDataHandler : MonoBehaviour
 
     public void AddBuilding(Guid buildingGuid, int prefabInt, Vector3 buildingPosition, Quaternion buildingRotation)
     {
+        foreach(BuildingData previousBuildingData in buildingDataList)
+        {
+            if (buildingGuid == previousBuildingData.buildingGuid)
+            {
+                buildingDataList.Remove(previousBuildingData);
+                buildingDataDictionary[buildingGuid] = null;
+                break;
+            }
+        }
+
         BuildingData buildingData = new BuildingData
         {
             buildingGuid = buildingGuid,
@@ -25,32 +35,20 @@ public class BuildingDataHandler : MonoBehaviour
             prefabInt = prefabInt,
             buildingPosition = buildingPosition,
             buildingRotation = buildingRotation,
-
-            buildingMetaData = new BuildingMetaData {
-                prefabInt = -1,
-                positionInGameObject = -1
-            }
         };
 
         buildingDataList.Add(buildingData);
-        buildingDataDictionary[buildingData.buildingGuid] = buildingData;
+        buildingDataDictionary[buildingGuid] = buildingData;
     }
 
     public void RemoveBuilding(Guid buildingGuid)
     {
-        int removeIndex = -1;
-        for (int i = 0; i < buildingDataList.Count; i++)
+        foreach (BuildingData previousBuildingData in buildingDataList)
         {
-            if (buildingDataList[i].buildingGuid == buildingGuid)
+            if (buildingGuid == previousBuildingData.buildingGuid)
             {
-                removeIndex = i;
-                break;
+                buildingDataList.Remove(previousBuildingData);
             }
-        }
-
-        if (removeIndex != -1)
-        {
-            buildingDataList.RemoveAt(removeIndex);
         }
     }
 
@@ -63,6 +61,10 @@ public class BuildingDataHandler : MonoBehaviour
             GameObject blueprint = Instantiate(raycastBuildingScript.prefabBlueprints[buildingData.prefabInt]);
 
             CanBuild canBuildScript = blueprint.GetComponent<CanBuild>();
+            BuildingTypes buildingTypesScript = blueprint.GetComponent<BuildingTypes>();
+
+            buildingTypesScript.prefabInt = buildingData.prefabInt;
+            buildingTypesScript.prefabGuid = buildingData.buildingGuid;
 
             blueprint.GetComponent<MeshRenderer>().material = canBuildScript.solidMaterial;
             blueprint.layer = 0;

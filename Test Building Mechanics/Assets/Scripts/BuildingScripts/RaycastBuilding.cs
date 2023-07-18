@@ -80,6 +80,7 @@ public class RaycastBuilding : MonoBehaviour
         {
             isBlueprintFollowingCursor = true;
             blueprint = Instantiate(prefabBlueprints[currentPrefabInt]);
+            blueprint.GetComponent<BuildingTypes>().prefabInt = currentPrefabInt;
             BlueprintToCursor();
             Vector3 scale = blueprint.transform.localScale;
             scale -= new Vector3(epsilon, epsilon, epsilon);
@@ -188,7 +189,7 @@ public class RaycastBuilding : MonoBehaviour
                 blueprint.GetComponent<MeshCollider>().isTrigger = false;
                 blueprint.tag = "SolidObject";
 
-                buildingDataHandlerScript.AddBuilding(buildingTypesScript.prefabGuid, currentPrefabInt, blueprint.transform.position, blueprint.transform.rotation);
+                buildingDataHandlerScript.AddBuilding(buildingTypesScript.prefabGuid, buildingTypesScript.prefabInt, blueprint.transform.position, blueprint.transform.rotation);
             }
         }
     }
@@ -199,7 +200,9 @@ public class RaycastBuilding : MonoBehaviour
         if (hitSuccessful)
         {
             blueprint = hit.transform.gameObject;
-            blueprintMeshRenderer = hit.transform.gameObject.GetComponent<MeshRenderer>();
+            currentPrefabInt = blueprint.GetComponent<BuildingTypes>().prefabInt;
+            blueprintMeshRenderer = blueprint.GetComponent<MeshRenderer>();
+            canBuildScript = blueprint.GetComponent<CanBuild>();
 
             Vector3 scale = blueprint.transform.localScale;
             scale -= new Vector3(epsilon, epsilon, epsilon);
