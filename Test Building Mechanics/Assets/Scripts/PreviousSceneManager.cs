@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class Indestructable : MonoBehaviour
+public class PreviousSceneManager : MonoBehaviour
 {
-    public static Indestructable instance = null;
+    public static PreviousSceneManager instance = null;
 
     public int prevScene = -1;
 

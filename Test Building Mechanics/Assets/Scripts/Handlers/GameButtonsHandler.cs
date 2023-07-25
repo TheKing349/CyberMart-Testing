@@ -1,18 +1,21 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameButtonsHandler : MonoBehaviour
 {
-    public DataManager dataManagerScript;
+    public GameDataManager gameDataManagerScript;
     public GameTimeScale gameTimeScaleScript;
     public RaycastBuilding raycastBuildingScript;
     public BuildingButtons buildingButtonsScript;
+    public SettingsDataHandler settingsDataHandlerScript;
 
     public GameObject buildingMenu;
     public GameObject scrollViewContent;
     public GameObject pauseMenuCanvas;
+    public GameObject settingsMenuCanvas;
 
     [HideInInspector] public List<GameObject> buildingTabButtons;
 
@@ -24,30 +27,22 @@ public class GameButtonsHandler : MonoBehaviour
 
     public void Settings()
     {
-        dataManagerScript.WriteData();
-
-        Indestructable.instance.prevScene = SceneManager.GetActiveScene().buildIndex;
-
-        ResumeGame();
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-
-        SceneManager.LoadScene(1);
-        dataManagerScript.playerDataHandlerScript.LoadPlayerStats();
+        pauseMenuCanvas.SetActive(false);
+        settingsMenuCanvas.SetActive(true);
     }
 
     public void QuitToMenu()
     {
-        dataManagerScript.WriteData();
+        gameDataManagerScript.WriteData();
 
-        Indestructable.instance.prevScene = SceneManager.GetActiveScene().buildIndex;
+        PreviousSceneManager.instance.prevScene = SceneManager.GetActiveScene().buildIndex;
 
         SceneManager.LoadScene(0);
     }
 
     public void QuitGame()
     {
-        dataManagerScript.WriteData();
+        gameDataManagerScript.WriteData();
 
         Application.Quit();
     }
@@ -74,6 +69,21 @@ public class GameButtonsHandler : MonoBehaviour
                 child.GetComponent<Button>().onClick.AddListener(() => buildingButtonsScript.BuildingTabsOnClick(closureIndex));
             }
         }
+    }
+    #endregion
+
+    #region Settings_Menu_Buttons
+    public void SetQualityLevel()
+    {
+        QualitySettings.SetQualityLevel(settingsDataHandlerScript.qualityDropdown.value);
+    }
+
+    public void BackButton()
+    {
+        settingsDataHandlerScript.SaveSettings();
+
+        pauseMenuCanvas.SetActive(true);
+        settingsMenuCanvas.SetActive(false);
     }
     #endregion
 }

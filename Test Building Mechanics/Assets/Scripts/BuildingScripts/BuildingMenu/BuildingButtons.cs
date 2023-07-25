@@ -69,6 +69,6 @@ public class BuildingButtons : MonoBehaviour
         buildingButtonPrefab.GetComponentInChildren<TextMeshProUGUI>().text = buildingButtonName;
         buildingButtonPrefab.GameObject().transform.SetParent(gameButtonsHandlerScript.scrollViewContent.transform, false);
 
-        buildingButtonPrefab.GetComponent<Button>().onClick.AddListener(() => raycastBuildingScript.SelectBlueprint(prefabNumber));
+        buildingButtonPrefab.GetComponent<Button>().onClick.AddListener(() => raycastBuildingScript.SelectBlueprint(true, prefabNumber));
     }
 }

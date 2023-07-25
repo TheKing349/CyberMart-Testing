@@ -13,7 +13,7 @@ public class SettingsButtonsHandler : MonoBehaviour
     public void BackButton()
     {
         settingsDataHandlerScript.SaveSettings();
-        SceneManager.LoadScene(Indestructable.instance.prevScene);
+        SceneManager.LoadScene(PreviousSceneManager.instance.prevScene);
     }
 
     public void SetQualityLevel()

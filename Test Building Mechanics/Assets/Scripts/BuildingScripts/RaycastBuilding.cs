@@ -71,9 +71,12 @@ public class RaycastBuilding : MonoBehaviour
         }
     }
 
-    public void SelectBlueprint(int prefabNumber)
+    public void SelectBlueprint(bool isCanvasToggleNeeded, int prefabNumber)
     {
-        canvasHandlerScript.ToggleBuildingCanvas();
+        if (isCanvasToggleNeeded)
+        {
+            canvasHandlerScript.ToggleBuildingCanvas();
+        }
 
         currentPrefabInt = prefabNumber;
         if (!isBlueprintFollowingCursor)
@@ -190,6 +193,8 @@ public class RaycastBuilding : MonoBehaviour
                 blueprint.tag = "SolidObject";
 
                 buildingDataHandlerScript.AddBuilding(buildingTypesScript.prefabGuid, buildingTypesScript.prefabInt, blueprint.transform.position, blueprint.transform.rotation);
+
+                SelectBlueprint(false, buildingTypesScript.prefabInt);
             }
         }
     }

@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class SettingsDataHandler : MonoBehaviour
 {
-    public SettingsDataManager settingsDataManagerScript;
+    public MainMenuDataManager mainMenuDataManagerScript;
+    public GameDataManager gameDataManagerScript;
 
     public TMP_Dropdown qualityDropdown;
 
@@ -16,12 +17,26 @@ public class SettingsDataHandler : MonoBehaviour
             qualityLevel = qualityDropdown.value
         };
 
-        settingsDataManagerScript.WriteData();
+        if (mainMenuDataManagerScript != null )
+        {
+            mainMenuDataManagerScript.WriteData();
+        }
+        else
+        {
+            gameDataManagerScript.WriteData();
+        }
     }
 
     public void LoadSettings()
     {
-        settingsDataManagerScript.ReadData();
+        if (mainMenuDataManagerScript != null)
+        {
+            mainMenuDataManagerScript.ReadData();
+        }
+        else
+        {
+            gameDataManagerScript.ReadData();
+        }
 
         qualityDropdown.value = settingsData.qualityLevel;
 

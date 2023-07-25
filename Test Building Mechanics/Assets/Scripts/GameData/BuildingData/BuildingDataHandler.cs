@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class BuildingDataHandler : MonoBehaviour
@@ -10,7 +11,7 @@ public class BuildingDataHandler : MonoBehaviour
      * GameObjects in shelves to work
      */
 
-    public DataManager dataManagerScript;
+    public GameDataManager gameDataManagerScript;
     public RaycastBuilding raycastBuildingScript;
 
     [HideInInspector] public List<BuildingData> buildingDataList = new List<BuildingData>();
@@ -18,7 +19,7 @@ public class BuildingDataHandler : MonoBehaviour
 
     public void AddBuilding(Guid buildingGuid, int prefabInt, Vector3 buildingPosition, Quaternion buildingRotation)
     {
-        foreach(BuildingData previousBuildingData in buildingDataList)
+        foreach(BuildingData previousBuildingData in buildingDataList.ToList<BuildingData>())
         {
             if (buildingGuid == previousBuildingData.buildingGuid)
             {
@@ -43,7 +44,7 @@ public class BuildingDataHandler : MonoBehaviour
 
     public void RemoveBuilding(Guid buildingGuid)
     {
-        foreach (BuildingData previousBuildingData in buildingDataList)
+        foreach (BuildingData previousBuildingData in buildingDataList.ToList<BuildingData>())
         {
             if (buildingGuid == previousBuildingData.buildingGuid)
             {
@@ -54,9 +55,9 @@ public class BuildingDataHandler : MonoBehaviour
 
     public void LoadBuildings()
     {
-        dataManagerScript.ReadData();
+        gameDataManagerScript.ReadData();
 
-        foreach (BuildingData buildingData in buildingDataList)
+        foreach (BuildingData buildingData in buildingDataList.ToList<BuildingData>())
         {
             GameObject blueprint = Instantiate(raycastBuildingScript.prefabBlueprints[buildingData.prefabInt]);
 

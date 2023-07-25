@@ -5,10 +5,11 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-public class DataManager : MonoBehaviour
+public class GameDataManager : MonoBehaviour
 {
     public BuildingDataHandler buildingDataHandlerScript;
     public PlayerDataHandler playerDataHandlerScript;
+    public SettingsDataHandler settingsDataHandlerScript;
 
     private JsonSerializerSettings serializerSettings;
 
@@ -17,6 +18,9 @@ public class DataManager : MonoBehaviour
 
     [HideInInspector] public string playerDataFilePath = "";
     [HideInInspector] public string playerDirectoryPath = "";
+
+    [HideInInspector] public string settingsDataFilePath = "";
+    [HideInInspector] public string settingsDirectoryPath = "";
 
     private bool didCreateFileDirectory;
 
@@ -38,6 +42,10 @@ public class DataManager : MonoBehaviour
         playerDirectoryPath = Application.persistentDataPath + Path.DirectorySeparatorChar + "Player" + Path.DirectorySeparatorChar;
         playerDataFilePath = playerDirectoryPath + "playerData.json";
         CreateDirectoryAndFile(playerDirectoryPath, playerDataFilePath);
+
+        settingsDirectoryPath = Application.persistentDataPath + Path.DirectorySeparatorChar + "Settings" + Path.DirectorySeparatorChar;
+        settingsDataFilePath = settingsDirectoryPath + "settings.json";
+        CreateDirectoryAndFile(settingsDirectoryPath, settingsDataFilePath);
     }
 
     private void Start()
@@ -46,6 +54,7 @@ public class DataManager : MonoBehaviour
         {
             buildingDataHandlerScript.LoadBuildings();
             playerDataHandlerScript.LoadPlayerStats();
+            settingsDataHandlerScript.LoadSettings();
         }
 
         if (File.Exists(buildingDataFilePath))
@@ -62,6 +71,9 @@ public class DataManager : MonoBehaviour
         playerDataHandlerScript.SavePlayerStats();
         string playerJson = JsonConvert.SerializeObject(playerDataHandlerScript.playerData, Formatting.Indented, serializerSettings);
         File.WriteAllText(playerDataFilePath, playerJson);
+
+        string settingsJson = JsonConvert.SerializeObject(settingsDataHandlerScript.settingsData, Formatting.Indented, serializerSettings);
+        File.WriteAllText(settingsDataFilePath, settingsJson);
     }
 
     public void ReadData()
@@ -69,6 +81,8 @@ public class DataManager : MonoBehaviour
         buildingDataHandlerScript.buildingDataList = JsonConvert.DeserializeObject<List<BuildingData>>(File.ReadAllText(buildingDataFilePath), serializerSettings);
 
         playerDataHandlerScript.playerData = JsonConvert.DeserializeObject<PlayerData>(File.ReadAllText(playerDataFilePath), serializerSettings);
+
+        settingsDataHandlerScript.settingsData = JsonConvert.DeserializeObject<SettingsData>(File.ReadAllText(settingsDataFilePath), serializerSettings);
     }
 
     public void CreateDirectoryAndFile(string directoryPath, string filePath)

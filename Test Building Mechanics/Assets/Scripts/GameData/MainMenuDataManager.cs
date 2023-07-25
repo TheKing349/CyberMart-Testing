@@ -4,7 +4,7 @@ using Newtonsoft.Json.UnityConverters.Math;
 using System.IO;
 using UnityEngine;
 
-public class SettingsDataManager : MonoBehaviour
+public class MainMenuDataManager : MonoBehaviour
 {
     public SettingsDataHandler settingsDataHandlerScript;
 

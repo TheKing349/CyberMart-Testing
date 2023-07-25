@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerDataHandler : MonoBehaviour
 {
-    public DataManager dataManagerScript;
+    public GameDataManager gameDataManagerScript;
 
     public GameObject player;
 
@@ -19,7 +19,7 @@ public class PlayerDataHandler : MonoBehaviour
 
     public void LoadPlayerStats()
     {
-        dataManagerScript.ReadData();
+        gameDataManagerScript.ReadData();
 
         player.transform.position = playerData.playerPosition;
         player.transform.rotation = playerData.playerRotation;
