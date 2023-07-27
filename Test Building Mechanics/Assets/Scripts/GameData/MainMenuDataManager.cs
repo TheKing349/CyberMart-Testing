@@ -13,8 +13,6 @@ public class MainMenuDataManager : MonoBehaviour
     [HideInInspector] public string settingsDataFilePath = "";
     [HideInInspector] public string settingsDirectoryPath = "";
 
-    private bool didCreateFileDirectory;
-
     private void Awake()
     {
         serializerSettings = new JsonSerializerSettings
@@ -33,7 +31,7 @@ public class MainMenuDataManager : MonoBehaviour
 
     private void Start()
     {
-        if (!didCreateFileDirectory)
+        if (File.ReadAllText(settingsDataFilePath) != "")
         {
             settingsDataHandlerScript.LoadSettings();
         }
@@ -51,8 +49,6 @@ public class MainMenuDataManager : MonoBehaviour
 
     public void CreateDirectoryAndFile(string directoryPath, string filePath)
     {
-        didCreateFileDirectory = true;
-
         if ((!File.Exists(filePath) && !Directory.Exists(directoryPath)))
         {
             Directory.CreateDirectory(directoryPath);
@@ -62,10 +58,6 @@ public class MainMenuDataManager : MonoBehaviour
         else if (!File.Exists(filePath))
         {
             File.Create(filePath);
-        }
-        else
-        {
-            didCreateFileDirectory = false;
         }
     }
 }

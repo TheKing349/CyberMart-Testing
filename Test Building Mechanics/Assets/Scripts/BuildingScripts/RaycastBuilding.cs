@@ -31,12 +31,12 @@ public class RaycastBuilding : MonoBehaviour
     private void Awake()
     {
         Object[] prefabs;
-        prefabs = Resources.LoadAll("Prefabs/Buildings", typeof(GameObject)).Cast<GameObject>().ToArray();
+        prefabs = Resources.LoadAll("Prefabs/Buildings", typeof(GameObject));
 
         int index = 0;
         foreach (var prefab in prefabs)
         {
-            prefabBlueprints.Add(prefab.GameObject());
+            prefabBlueprints.Add((GameObject)prefab);
             index++;
         }
     }
@@ -51,19 +51,19 @@ public class RaycastBuilding : MonoBehaviour
             if (isBlueprintFollowingCursor)
             {
                 BlueprintToCursor();
-                if ((!isGridSnap) && (Input.GetKey(keybindsScript.rotateLeftKey)))
+                if ((!isGridSnap) && (Input.GetKey(keybindsScript.rotateBlueprintLeftKey)))
                 {
                     RotateBlueprint(0);
                 }
-                else if ((!isGridSnap) && (Input.GetKey(keybindsScript.rotateRightKey)))
+                else if ((!isGridSnap) && (Input.GetKey(keybindsScript.rotateBlueprintRightKey)))
                 {
                     RotateBlueprint(1);
                 }
-                else if ((isGridSnap) && (Input.GetKeyDown(keybindsScript.rotateLeftKey)))
+                else if ((isGridSnap) && (Input.GetKeyDown(keybindsScript.rotateBlueprintLeftKey)))
                 {
                     RotateBlueprint(0);
                 }
-                else if ((isGridSnap) && (Input.GetKeyDown(keybindsScript.rotateRightKey)))
+                else if ((isGridSnap) && (Input.GetKeyDown(keybindsScript.rotateBlueprintRightKey)))
                 {
                     RotateBlueprint(1);
                 }
@@ -71,12 +71,14 @@ public class RaycastBuilding : MonoBehaviour
         }
     }
 
-    public void SelectBlueprint(bool isCanvasToggleNeeded, int prefabNumber)
+    public void SelectBlueprint(/*bool isCanvasToggleNeeded, */int prefabNumber)
     {
+        /*
         if (isCanvasToggleNeeded)
         {
             canvasHandlerScript.ToggleBuildingCanvas();
         }
+        */
 
         currentPrefabInt = prefabNumber;
         if (!isBlueprintFollowingCursor)
@@ -194,7 +196,7 @@ public class RaycastBuilding : MonoBehaviour
 
                 buildingDataHandlerScript.AddBuilding(buildingTypesScript.prefabGuid, buildingTypesScript.prefabInt, blueprint.transform.position, blueprint.transform.rotation);
 
-                SelectBlueprint(false, buildingTypesScript.prefabInt);
+                SelectBlueprint(/*false, */buildingTypesScript.prefabInt);
             }
         }
     }

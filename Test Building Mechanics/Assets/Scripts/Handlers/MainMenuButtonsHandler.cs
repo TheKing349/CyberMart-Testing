@@ -11,7 +11,7 @@ public class MainMenuButtonsHandler : MonoBehaviour
     #region Main_Menu_Buttons
     public void StartGame()
     {
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene(1);
     }
 
     public void Settings()

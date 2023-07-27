@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class CanvasHandler : MonoBehaviour
 {
+    public BuildingButtons buildingButtonsScript;
     public GameTimeScale gameTimeScaleScript;
 
     public GameObject pauseMenuCanvas;
@@ -19,7 +20,11 @@ public class CanvasHandler : MonoBehaviour
     {
         if (!pauseMenuCanvas.activeSelf)
         {
-            gameTimeScaleScript.ToggleGameState(buildingMenuCanvas);
+            if (!buildingMenuCanvas.activeSelf)
+            {
+                buildingButtonsScript.SelectBlueprint(0);
+            }
+            buildingMenuCanvas.SetActive(!buildingMenuCanvas.activeSelf);
         }
     }
 }

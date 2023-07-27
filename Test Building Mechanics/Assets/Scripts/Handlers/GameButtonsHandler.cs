@@ -50,6 +50,7 @@ public class GameButtonsHandler : MonoBehaviour
     #endregion
 
     #region Building_Buttons
+    /*
     private void Awake()
     {
         BuildingTabsListAdder();
@@ -70,6 +71,7 @@ public class GameButtonsHandler : MonoBehaviour
             }
         }
     }
+    */
     #endregion
 
     #region Settings_Menu_Buttons

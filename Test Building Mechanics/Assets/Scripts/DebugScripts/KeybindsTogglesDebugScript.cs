@@ -17,9 +17,11 @@ public class KeybindsTogglesDebugScript : MonoBehaviour
             "playerJumpkey: " + keybindsScript.playerJumpKey + "\r\n" +
             "toggleBuildingCanvasKey: " + keybindsScript.toggleBuildingCanvasKey + "\r\n" +
             "toggleGridKey: " + keybindsScript.toggleGridKey + "\r\n" +
-            "rotateLeftKey: " + keybindsScript.rotateLeftKey + "\r\n" +
-            "rotateRightKey: " + keybindsScript.rotateRightKey + "\r\n" +
+            "rotateBlueprintLeftKey: " + keybindsScript.rotateBlueprintLeftKey + "\r\n" +
+            "rotateBlueprintRightKey: " + keybindsScript.rotateBlueprintRightKey + "\r\n" +
             "moveObjectKey: " + keybindsScript.moveObjectKey + "\r\n" +
+            "rotateBuildingMenuLeftKey: " + keybindsScript.rotateBuildingMenuLeftKey + "\r\n" +
+            "rotateBuildingMenuRightKey: " + keybindsScript.rotateBuildingMenuRightKey + "\r\n" +
             "destroyObjectKey: " + keybindsScript.destroyObjectKey;
     }
     private void FixedUpdate()

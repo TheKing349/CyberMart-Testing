@@ -19,7 +19,7 @@ public class BuildingDataHandler : MonoBehaviour
 
     public void AddBuilding(Guid buildingGuid, int prefabInt, Vector3 buildingPosition, Quaternion buildingRotation)
     {
-        foreach(BuildingData previousBuildingData in buildingDataList.ToList<BuildingData>())
+        foreach(BuildingData previousBuildingData in buildingDataList.ToList())
         {
             if (buildingGuid == previousBuildingData.buildingGuid)
             {
@@ -44,7 +44,7 @@ public class BuildingDataHandler : MonoBehaviour
 
     public void RemoveBuilding(Guid buildingGuid)
     {
-        foreach (BuildingData previousBuildingData in buildingDataList.ToList<BuildingData>())
+        foreach (BuildingData previousBuildingData in buildingDataList.ToList())
         {
             if (buildingGuid == previousBuildingData.buildingGuid)
             {
@@ -57,7 +57,7 @@ public class BuildingDataHandler : MonoBehaviour
     {
         gameDataManagerScript.ReadData();
 
-        foreach (BuildingData buildingData in buildingDataList.ToList<BuildingData>())
+        foreach (BuildingData buildingData in buildingDataList.ToList())
         {
             GameObject blueprint = Instantiate(raycastBuildingScript.prefabBlueprints[buildingData.prefabInt]);
 

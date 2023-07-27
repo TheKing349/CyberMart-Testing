@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Keybinds : MonoBehaviour
 {
-    public BuildingMenuSearch buildingMenuSearchScript;
+    public BuildingButtons buildingButtonsScript;
     public RaycastBuilding raycastBuildingScript;
     public CanvasHandler canvasHandlerScript;
     public GameTimeScale gameTimeScaleScript;
@@ -11,12 +11,15 @@ public class Keybinds : MonoBehaviour
 
     public KeyCode toggleBuildingCanvasKey;
     public KeyCode toggleGridKey;
-    public KeyCode rotateLeftKey;
-    public KeyCode rotateRightKey;
+    public KeyCode rotateBlueprintLeftKey;
+    public KeyCode rotateBlueprintRightKey;
     public KeyCode moveObjectKey;
     public KeyCode destroyObjectKey;
 
     public KeyCode pauseResumeKey;
+
+    public KeyCode rotateBuildingMenuLeftKey;
+    public KeyCode rotateBuildingMenuRightKey;
 
     public int buildBlueprintKey;
     public int deselectBlueprintKey;
@@ -24,7 +27,7 @@ public class Keybinds : MonoBehaviour
     void Update()
     {
         #region BUILDING_PLACING
-        if ((Input.GetKeyDown(toggleBuildingCanvasKey)) && (!raycastBuildingScript.isBlueprintFollowingCursor) && (!buildingMenuSearchScript.isTyping))
+        if ((Input.GetKeyDown(toggleBuildingCanvasKey)) && (!raycastBuildingScript.isBlueprintFollowingCursor))
         {
             canvasHandlerScript.ToggleBuildingCanvas();
         }
@@ -53,7 +56,17 @@ public class Keybinds : MonoBehaviour
             {
                 raycastBuildingScript.DeselectBlueprint();
             }
+
+            if (Input.GetKeyDown(rotateBuildingMenuLeftKey))
+            {
+                buildingButtonsScript.RotateBuildingMenuLeft();
+            }
+            if (Input.GetKeyDown(rotateBuildingMenuRightKey))
+            {
+                buildingButtonsScript.RotateBuildingMenuRight();
+            }
         }
+
 
         #endregion
 
