@@ -1,8 +1,6 @@
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class GameButtonsHandler : MonoBehaviour
 {
@@ -34,8 +32,6 @@ public class GameButtonsHandler : MonoBehaviour
     public void QuitToMenu()
     {
         gameDataManagerScript.WriteData();
-
-        PreviousSceneManager.instance.prevScene = SceneManager.GetActiveScene().buildIndex;
 
         SceneManager.LoadScene(0);
     }

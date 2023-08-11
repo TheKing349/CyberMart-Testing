@@ -1,5 +1,3 @@
-using Newtonsoft.Json.Bson;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -65,5 +63,10 @@ public class BuildingButtons : MonoBehaviour
         nextPrefabImage.sprite = spritesScript.spritesList[nextPrefabInt];
         
         raycastBuildingScript.SelectBlueprint(prefabInt);
+    }
+
+    public void DeselectBlueprint()
+    {
+        raycastBuildingScript.DeselectBlueprint();
     }
 }

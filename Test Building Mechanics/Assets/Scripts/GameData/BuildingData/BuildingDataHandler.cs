@@ -5,12 +5,6 @@ using UnityEngine;
 
 public class BuildingDataHandler : MonoBehaviour
 {
-    /*
-     * TO DO:
-     * Get buildingMetaData working: 
-     * GameObjects in shelves to work
-     */
-
     public GameDataManager gameDataManagerScript;
     public RaycastBuilding raycastBuildingScript;
 

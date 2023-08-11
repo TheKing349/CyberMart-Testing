@@ -10,10 +10,9 @@ public class CanvasHandler : MonoBehaviour
 
     public void TogglePauseCanvas()
     {
-        if (!buildingMenuCanvas.activeSelf)
-        {
-            gameTimeScaleScript.ToggleGameState(pauseMenuCanvas);
-        }
+        buildingMenuCanvas.SetActive(false);
+        buildingButtonsScript.DeselectBlueprint();
+        gameTimeScaleScript.ToggleGameState(pauseMenuCanvas);
     }
 
     public void ToggleBuildingCanvas()

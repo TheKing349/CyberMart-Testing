@@ -1,19 +1,16 @@
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class RaycastBuilding : MonoBehaviour
 {
     public Keybinds keybindsScript;
     public CanvasHandler canvasHandlerScript;
-    private CanBuild canBuildScript;
-
     public BuildingDataHandler buildingDataHandlerScript;
+    private CanBuild canBuildScript;
 
     private GameObject blueprint;
 
-    [HideInInspector] public List<GameObject> prefabBlueprints;
+    public List<GameObject> prefabBlueprints;
 
     private MeshRenderer blueprintMeshRenderer;
 
@@ -27,19 +24,6 @@ public class RaycastBuilding : MonoBehaviour
     public float gridSize = 1f;
     public float blueprintRotationSpeed = 100f;
     [HideInInspector] public float epsilon = 0.005f;
-
-    private void Awake()
-    {
-        Object[] prefabs;
-        prefabs = Resources.LoadAll("Prefabs/Buildings", typeof(GameObject));
-
-        int index = 0;
-        foreach (var prefab in prefabs)
-        {
-            prefabBlueprints.Add((GameObject)prefab);
-            index++;
-        }
-    }
 
     private void Update()
     {
@@ -71,15 +55,8 @@ public class RaycastBuilding : MonoBehaviour
         }
     }
 
-    public void SelectBlueprint(/*bool isCanvasToggleNeeded, */int prefabNumber)
+    public void SelectBlueprint(int prefabNumber)
     {
-        /*
-        if (isCanvasToggleNeeded)
-        {
-            canvasHandlerScript.ToggleBuildingCanvas();
-        }
-        */
-
         currentPrefabInt = prefabNumber;
         if (!isBlueprintFollowingCursor)
         {
@@ -104,7 +81,7 @@ public class RaycastBuilding : MonoBehaviour
 
             Vector3 newPos = hit.point - lowerCenter;
 
-            if ((int)blueprint.GetComponent<BuildingTypes>().buildingTypeDropdown == 0)
+            if (currentPrefabInt == 2)
             {
                 float rotationY = blueprint.transform.eulerAngles.y;
                 float offset = 0.5f;
@@ -196,7 +173,7 @@ public class RaycastBuilding : MonoBehaviour
 
                 buildingDataHandlerScript.AddBuilding(buildingTypesScript.prefabGuid, buildingTypesScript.prefabInt, blueprint.transform.position, blueprint.transform.rotation);
 
-                SelectBlueprint(/*false, */buildingTypesScript.prefabInt);
+                SelectBlueprint(buildingTypesScript.prefabInt);
             }
         }
     }
