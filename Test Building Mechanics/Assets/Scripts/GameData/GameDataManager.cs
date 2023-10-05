@@ -71,7 +71,6 @@ public class GameDataManager : MonoBehaviour
 
     public void WriteData()
     {
-        Debug.Log(buildingDataHandlerScript.buildingDataList);
         string buildingJson = JsonConvert.SerializeObject(buildingDataHandlerScript.buildingDataList, Formatting.Indented, serializerSettings);
         File.WriteAllText(buildingDataFilePath, buildingJson);
 
