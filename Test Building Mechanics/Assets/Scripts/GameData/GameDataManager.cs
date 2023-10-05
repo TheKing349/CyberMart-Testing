@@ -37,6 +37,7 @@ public class GameDataManager : MonoBehaviour
         buildingDirectoryPath = Application.persistentDataPath + Path.DirectorySeparatorChar + "Building" + Path.DirectorySeparatorChar;
         buildingDataFilePath = buildingDirectoryPath + "buildingData.json";
         CreateDirectoryAndFile(buildingDirectoryPath, buildingDataFilePath);
+        File.WriteAllText(buildingDataFilePath, "[]");
 
         playerDirectoryPath = Application.persistentDataPath + Path.DirectorySeparatorChar + "Player" + Path.DirectorySeparatorChar;
         playerDataFilePath = playerDirectoryPath + "playerData.json";
@@ -70,6 +71,7 @@ public class GameDataManager : MonoBehaviour
 
     public void WriteData()
     {
+        Debug.Log(buildingDataHandlerScript.buildingDataList);
         string buildingJson = JsonConvert.SerializeObject(buildingDataHandlerScript.buildingDataList, Formatting.Indented, serializerSettings);
         File.WriteAllText(buildingDataFilePath, buildingJson);
 
