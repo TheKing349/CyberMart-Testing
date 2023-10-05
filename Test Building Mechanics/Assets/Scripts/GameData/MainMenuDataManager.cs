@@ -53,11 +53,11 @@ public class MainMenuDataManager : MonoBehaviour
         {
             Directory.CreateDirectory(directoryPath);
 
-            File.Create(filePath);
+            File.Create(filePath).Dispose();
         }
         else if (!File.Exists(filePath))
         {
-            File.Create(filePath);
+            File.Create(filePath).Dispose();
         }
     }
 }

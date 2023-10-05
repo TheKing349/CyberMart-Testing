@@ -1,7 +1,7 @@
 using UnityEngine;
-public class PlayerMovment : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
-    public Keybinds keybindsScript;
+    public CurrentKeybinds currentKeybindsScript;
 
     public Camera playerCamera;
 
@@ -36,12 +36,14 @@ public class PlayerMovment : MonoBehaviour
         Vector3 right = transform.TransformDirection(Vector3.right);
 
         bool isRunning = Input.GetKey(KeyCode.LeftShift);
-        float curSpeedX = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Vertical") : 0;
-        float curSpeedY = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Horizontal") : 0;
+        float curSpeedX = canMove ? (isRunning ? runningSpeed : walkingSpeed) * (Input.GetKey(currentKeybindsScript.playerForwardKey) ? 1 : Input.GetKey(currentKeybindsScript.playerBackwardKey) ? -1 : 0) : 0;
+
+        float curSpeedY = canMove ? (isRunning ? runningSpeed : walkingSpeed) * (Input.GetKey(currentKeybindsScript.playerRightKey) ? 1 : Input.GetKey(currentKeybindsScript.playerLeftKey) ? -1 : 0) : 0;
+
         float movementDirectionY = moveDirection.y;
         moveDirection = (forward * curSpeedX) + (right * curSpeedY);
 
-        if ((Input.GetKey(keybindsScript.playerJumpKey)) && (canMove) && (characterController.isGrounded))
+        if ((Input.GetKey(currentKeybindsScript.playerJumpKey)) && (canMove) && (characterController.isGrounded))
         {
             moveDirection.y = jumpSpeed;
         }

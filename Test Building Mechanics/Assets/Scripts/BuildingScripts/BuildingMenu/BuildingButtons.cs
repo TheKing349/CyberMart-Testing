@@ -61,7 +61,6 @@ public class BuildingButtons : MonoBehaviour
         previousPrefabImage.sprite = spritesScript.spritesList[previousPrefabInt];
         currentPrefabImage.sprite = spritesScript.spritesList[prefabInt];
         nextPrefabImage.sprite = spritesScript.spritesList[nextPrefabInt];
-        
         raycastBuildingScript.SelectBlueprint(prefabInt);
     }
 

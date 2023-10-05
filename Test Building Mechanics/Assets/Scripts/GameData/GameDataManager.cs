@@ -3,6 +3,7 @@ using Newtonsoft.Json.UnityConverters;
 using Newtonsoft.Json.UnityConverters.Math;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 public class GameDataManager : MonoBehaviour
@@ -63,7 +64,7 @@ public class GameDataManager : MonoBehaviour
 
         if (File.Exists(buildingDataFilePath))
         {
-            InvokeRepeating(nameof(WriteData), 0.0f, 300.0f);
+            InvokeRepeating(nameof(WriteData), 300.0f, 300.0f);
         }
     }
 
@@ -95,11 +96,11 @@ public class GameDataManager : MonoBehaviour
         {
             Directory.CreateDirectory(directoryPath);
 
-            File.Create(filePath);
+            File.Create(filePath).Dispose();
         }
         else if (!File.Exists(filePath))
         {
-            File.Create(filePath);
+            File.Create(filePath).Dispose();
         }
     }
 }

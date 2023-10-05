@@ -1,77 +1,60 @@
 using UnityEngine;
 
-public class Keybinds : MonoBehaviour
+public class KeybindResponses : MonoBehaviour
 {
+    public CurrentKeybinds currentKeybindsScript;
+    public DefaultKeybinds defaultKeybindsScript;
     public BuildingButtons buildingButtonsScript;
     public RaycastBuilding raycastBuildingScript;
     public CanvasHandler canvasHandlerScript;
     public GameTimeScale gameTimeScaleScript;
 
-    public KeyCode playerJumpKey;
-
-    public KeyCode toggleBuildingCanvasKey;
-    public KeyCode toggleGridKey;
-    public KeyCode rotateBlueprintLeftKey;
-    public KeyCode rotateBlueprintRightKey;
-    public KeyCode moveObjectKey;
-    public KeyCode destroyObjectKey;
-
-    public KeyCode pauseResumeKey;
-
-    public KeyCode rotateBuildingMenuLeftKey;
-    public KeyCode rotateBuildingMenuRightKey;
-
-    public int buildBlueprintKey;
-    public int deselectBlueprintKey;
-
     void Update()
     {
         #region BUILDING_PLACING
-        if ((Input.GetKeyDown(toggleBuildingCanvasKey)) && (!raycastBuildingScript.isBlueprintFollowingCursor))
+        if ((Input.GetKeyDown(currentKeybindsScript.buildingCanvasKey)) && (!raycastBuildingScript.isBlueprintFollowingCursor))
         {
             canvasHandlerScript.ToggleBuildingCanvas();
         }
 
         if (!gameTimeScaleScript.isGamePaused)
         {
-            if (Input.GetKeyDown(toggleGridKey))
+            if (Input.GetKeyDown(currentKeybindsScript.blueprintGridKey))
             {
                 raycastBuildingScript.ToggleGridSnap();
             }
 
-            if (Input.GetKeyDown(moveObjectKey))
+            if (Input.GetKeyDown(currentKeybindsScript.blueprintMoveKey))
             {
                 raycastBuildingScript.MoveObject();
             }
-            else if (Input.GetKeyDown(destroyObjectKey))
+            else if (Input.GetKeyDown(currentKeybindsScript.blueprintDestroyKey))
             {
                 raycastBuildingScript.DestroyObject();
             }
 
-            if (Input.GetMouseButtonDown(buildBlueprintKey))
+            if (Input.GetMouseButtonDown(defaultKeybindsScript.buildBlueprintKey))
             {
                 raycastBuildingScript.BuildBlueprint();
             }
-            else if (Input.GetMouseButtonDown(deselectBlueprintKey))
+            else if (Input.GetMouseButtonDown(defaultKeybindsScript.deselectBlueprintKey))
             {
                 raycastBuildingScript.DeselectBlueprint();
             }
 
-            if (Input.GetKeyDown(rotateBuildingMenuLeftKey))
+            if (Input.GetKeyDown(currentKeybindsScript.buildingLeftKey))
             {
                 buildingButtonsScript.RotateBuildingMenuLeft();
             }
-            if (Input.GetKeyDown(rotateBuildingMenuRightKey))
+            if (Input.GetKeyDown(currentKeybindsScript.buildingRightKey))
             {
                 buildingButtonsScript.RotateBuildingMenuRight();
             }
         }
-
-
         #endregion
 
         #region PAUSE_RESUME
-        if (Input.GetKeyDown(pauseResumeKey))
+        if (Input.GetKeyDown(currentKeybindsScript.pauseResumeKey))
         {
             canvasHandlerScript.TogglePauseCanvas();
         }

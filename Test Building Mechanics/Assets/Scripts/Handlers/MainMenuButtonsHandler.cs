@@ -3,8 +3,6 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuButtonsHandler : MonoBehaviour
 {
-    public SettingsDataHandler settingsDataHandlerScript;
-
     public GameObject mainMenuCanvas;
     public GameObject settingsMenuCanvas;
 
@@ -23,21 +21,6 @@ public class MainMenuButtonsHandler : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
-    }
-    #endregion
-
-    #region Settings_Menu_Buttons
-    public void SetQualityLevel()
-    {
-        QualitySettings.SetQualityLevel(settingsDataHandlerScript.qualityDropdown.value);
-    }
-
-    public void BackButton()
-    {
-        settingsDataHandlerScript.SaveSettings();
-
-        mainMenuCanvas.SetActive(true);
-        settingsMenuCanvas.SetActive(false);
     }
     #endregion
 }
