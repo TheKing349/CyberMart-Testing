@@ -6,7 +6,7 @@ public class KeybindResponses : MonoBehaviour
     public DefaultKeybinds defaultKeybindsScript;
     public BuildingButtons buildingButtonsScript;
     public RaycastBuilding raycastBuildingScript;
-    public CanvasHandler canvasHandlerScript;
+    public GameCanvasHandler gameCanvasHandlerScript;
     public GameTimeScale gameTimeScaleScript;
 
     void Update()
@@ -14,7 +14,7 @@ public class KeybindResponses : MonoBehaviour
         #region BUILDING_PLACING
         if ((Input.GetKeyDown(currentKeybindsScript.buildingCanvasKey)) && (!raycastBuildingScript.isBlueprintFollowingCursor))
         {
-            canvasHandlerScript.ToggleBuildingCanvas();
+            gameCanvasHandlerScript.ToggleBuildingCanvas();
         }
 
         if (!gameTimeScaleScript.isGamePaused)
@@ -56,7 +56,7 @@ public class KeybindResponses : MonoBehaviour
         #region PAUSE_RESUME
         if (Input.GetKeyDown(currentKeybindsScript.pauseResumeKey))
         {
-            canvasHandlerScript.TogglePauseCanvas();
+            gameCanvasHandlerScript.TogglePauseCanvas();
         }
         #endregion
     }

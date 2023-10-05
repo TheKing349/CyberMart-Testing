@@ -4,7 +4,7 @@ using UnityEngine;
 public class RaycastBuilding : MonoBehaviour
 {
     public CurrentKeybinds currentKeybindsScript;
-    public CanvasHandler canvasHandlerScript;
+    public GameCanvasHandler gameCanvasHandlerScript;
     public BuildingDataHandler buildingDataHandlerScript;
     private CanBuild canBuildScript;
 

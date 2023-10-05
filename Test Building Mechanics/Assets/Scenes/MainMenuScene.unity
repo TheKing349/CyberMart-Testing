@@ -3220,6 +3220,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d50b7de0007ceb3429dd3ffacab29230, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentKeybindsScript: {fileID: 402429475}
+  settingsButtonsHandlerScript: {fileID: 402429476}
   mainMenuCanvas: {fileID: 1009924892}
   settingsMenuCanvas: {fileID: 2141482901}
 --- !u!114 &402429473

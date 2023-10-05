@@ -1112,7 +1112,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentKeybindsScript: {fileID: 1276113748}
-  canvasHandlerScript: {fileID: 1276113742}
+  gameCanvasHandlerScript: {fileID: 1276113742}
   buildingDataHandlerScript: {fileID: 1276113743}
   prefabBlueprints:
   - {fileID: 969063053262516912, guid: 6bd5d4c6abd8e3f4ab0f46e43eb4dc6d, type: 3}
@@ -7356,8 +7356,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingButtonsScript: {fileID: 1276113744}
   gameTimeScaleScript: {fileID: 1276113737}
+  settingsButtonsHandlerScript: {fileID: 1276113749}
   pauseMenuCanvas: {fileID: 1840578703}
   buildingMenuCanvas: {fileID: 609976288}
+  settingsMenuCanvas: {fileID: 1067405123}
 --- !u!114 &1276113743
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7408,7 +7410,7 @@ MonoBehaviour:
     type: 2}
   buildingButtonsScript: {fileID: 1276113744}
   raycastBuildingScript: {fileID: 159068984}
-  canvasHandlerScript: {fileID: 1276113742}
+  gameCanvasHandlerScript: {fileID: 1276113742}
   gameTimeScaleScript: {fileID: 1276113737}
 --- !u!114 &1276113746
 MonoBehaviour:
