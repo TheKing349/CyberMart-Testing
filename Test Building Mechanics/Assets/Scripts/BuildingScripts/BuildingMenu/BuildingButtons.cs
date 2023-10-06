@@ -11,7 +11,7 @@ public class BuildingButtons : MonoBehaviour
     public Image currentPrefabImage;
     public Image nextPrefabImage;
 
-    private int currentPrefabInt = 0;
+    [HideInInspector] public int currentPrefabInt = 0;
 
     private int prefabBlueprintCount;
 

@@ -32,7 +32,7 @@ public class GameCanvasHandler : MonoBehaviour
         {
             if (!buildingMenuCanvas.activeSelf)
             {
-                buildingButtonsScript.SelectBlueprint(0);
+                buildingButtonsScript.SelectBlueprint(buildingButtonsScript.currentPrefabInt);
             }
             buildingMenuCanvas.SetActive(!buildingMenuCanvas.activeSelf);
         }

@@ -20,12 +20,15 @@ public class RaycastBuilding : MonoBehaviour
 
     public int gridRotationDegreeAmount = 45;
     [HideInInspector] public int currentPrefabInt = -1;
+    private int oldPrefabInt;
     private int shelfPrefabInt = 3;
 
     public float rayDistance = 3.0f;
     public float gridSize = 1f;
     public float blueprintRotationSpeed = 100f;
     [HideInInspector] public float epsilon = 0.005f;
+
+    private Vector3 oldBlueprintRotation = Vector3.zero;
 
     private void Update()
     {
@@ -66,6 +69,10 @@ public class RaycastBuilding : MonoBehaviour
             isBlueprintFollowingCursor = true;
             blueprint = Instantiate(prefabBlueprints[currentPrefabInt]);
             blueprint.GetComponent<BuildingTypes>().prefabInt = currentPrefabInt;
+            if (oldPrefabInt == currentPrefabInt)
+            {
+                blueprint.transform.eulerAngles = oldBlueprintRotation;
+            }
             BlueprintToCursor();
             Vector3 scale = blueprint.transform.localScale;
             scale -= new Vector3(epsilon, epsilon, epsilon);
@@ -181,6 +188,8 @@ public class RaycastBuilding : MonoBehaviour
 
             if (canBuildScript.canBuildBlueprint)
             {
+                oldBlueprintRotation = blueprint.transform.eulerAngles;
+                oldPrefabInt = currentPrefabInt;
                 blueprintMeshRenderer = blueprint.GetComponent<MeshRenderer>();
 
                 blueprintMeshRenderer.material = canBuildScript.solidMaterial;

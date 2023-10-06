@@ -39,7 +39,9 @@ public class KeybindResponses : MonoBehaviour
             }
             else if (Input.GetMouseButtonDown(defaultKeybindsScript.deselectBlueprintKey))
             {
+                raycastBuildingScript.isGridSnap = raycastBuildingScript.prevIsGridSnap;
                 raycastBuildingScript.DeselectBlueprint();
+                gameCanvasHandlerScript.ToggleBuildingCanvas();
             }
 
             if (Input.GetKeyDown(currentKeybindsScript.buildingLeftKey))
