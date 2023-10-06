@@ -1,20 +1,29 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SettingsDataHandler : MonoBehaviour
 {
+    public KeybindsInitializer keybindsInitializerScript;
+    public DefaultKeybinds defaultKeybindsScript;
+    public ChangeKeybinds changeKeybindsScript;
+
     public MainMenuDataManager mainMenuDataManagerScript;
     public GameDataManager gameDataManagerScript;
 
     public TMP_Dropdown qualityDropdown;
 
     [HideInInspector] public SettingsData settingsData;
+    [HideInInspector] public int qualityLevel;
+    public Dictionary<string, KeyCode> keybindsDictionary = new Dictionary<string, KeyCode>();
 
     public void SaveSettings()
     {
         settingsData = new SettingsData
         {
-            qualityLevel = qualityDropdown.value
+            qualityLevel = qualityLevel,
+            keybindsDictionary = keybindsDictionary
         };
 
         if (mainMenuDataManagerScript != null )
@@ -25,6 +34,8 @@ public class SettingsDataHandler : MonoBehaviour
         {
             gameDataManagerScript.WriteData();
         }
+
+        LoadSettings();
     }
 
     public void LoadSettings()
@@ -39,7 +50,12 @@ public class SettingsDataHandler : MonoBehaviour
         }
 
         qualityDropdown.value = settingsData.qualityLevel;
+        QualitySettings.SetQualityLevel(settingsData.qualityLevel, true);
 
-        QualitySettings.SetQualityLevel(qualityDropdown.value, true);
+        keybindsDictionary = settingsData.keybindsDictionary;
+        foreach (Button button in changeKeybindsScript.keybindButtonsList)
+        {
+            keybindsInitializerScript.ChangeKeybindButtonsText(button);
+        }
     }
 }

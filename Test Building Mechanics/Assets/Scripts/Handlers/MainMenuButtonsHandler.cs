@@ -3,7 +3,8 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuButtonsHandler : MonoBehaviour
 {
-    public SettingsDataHandler settingsDataHandlerScript;
+    public CurrentKeybinds currentKeybindsScript;
+    public SettingsButtonsHandler settingsButtonsHandlerScript;
 
     public GameObject mainMenuCanvas;
     public GameObject settingsMenuCanvas;
@@ -11,7 +12,7 @@ public class MainMenuButtonsHandler : MonoBehaviour
     #region Main_Menu_Buttons
     public void StartGame()
     {
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene(1);
     }
 
     public void Settings()
@@ -26,18 +27,15 @@ public class MainMenuButtonsHandler : MonoBehaviour
     }
     #endregion
 
-    #region Settings_Menu_Buttons
-    public void SetQualityLevel()
+    #region Back_Settings
+    void Update()
     {
-        QualitySettings.SetQualityLevel(settingsDataHandlerScript.qualityDropdown.value);
-    }
-
-    public void BackButton()
-    {
-        settingsDataHandlerScript.SaveSettings();
-
-        mainMenuCanvas.SetActive(true);
-        settingsMenuCanvas.SetActive(false);
+        if (Input.GetKeyDown(currentKeybindsScript.pauseResumeKey) && (settingsMenuCanvas.activeSelf))
+        {
+            settingsButtonsHandlerScript.SaveAndApplyButton();
+            settingsMenuCanvas.SetActive(false);
+            mainMenuCanvas.SetActive(true);
+        }
     }
     #endregion
 }

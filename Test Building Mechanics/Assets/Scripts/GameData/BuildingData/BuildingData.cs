@@ -10,7 +10,7 @@ public class BuildingData
     public Vector3 buildingPosition;
     public Quaternion buildingRotation;
 
-    public BuildingMetaData buildingMetaData;
+    //public BuildingMetaData buildingMetaData;
 }
 
 public class BuildingMetaData

@@ -3,6 +3,7 @@ using Newtonsoft.Json.UnityConverters;
 using Newtonsoft.Json.UnityConverters.Math;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 public class GameDataManager : MonoBehaviour
@@ -22,8 +23,6 @@ public class GameDataManager : MonoBehaviour
     [HideInInspector] public string settingsDataFilePath = "";
     [HideInInspector] public string settingsDirectoryPath = "";
 
-    private bool didCreateFileDirectory;
-
     private void Awake()
     {
         serializerSettings = new JsonSerializerSettings
@@ -38,6 +37,7 @@ public class GameDataManager : MonoBehaviour
         buildingDirectoryPath = Application.persistentDataPath + Path.DirectorySeparatorChar + "Building" + Path.DirectorySeparatorChar;
         buildingDataFilePath = buildingDirectoryPath + "buildingData.json";
         CreateDirectoryAndFile(buildingDirectoryPath, buildingDataFilePath);
+        File.WriteAllText(buildingDataFilePath, "[]");
 
         playerDirectoryPath = Application.persistentDataPath + Path.DirectorySeparatorChar + "Player" + Path.DirectorySeparatorChar;
         playerDataFilePath = playerDirectoryPath + "playerData.json";
@@ -50,16 +50,22 @@ public class GameDataManager : MonoBehaviour
 
     private void Start()
     {
-        if (!didCreateFileDirectory)
+        if (File.ReadAllText(buildingDataFilePath) != "")
         {
             buildingDataHandlerScript.LoadBuildings();
+        }
+        if (File.ReadAllText(playerDataFilePath) != "")
+        {
             playerDataHandlerScript.LoadPlayerStats();
+        }
+        if (File.ReadAllText(settingsDataFilePath) != "")
+        {
             settingsDataHandlerScript.LoadSettings();
         }
 
         if (File.Exists(buildingDataFilePath))
         {
-            InvokeRepeating(nameof(WriteData), 0.0f, 300.0f);
+            InvokeRepeating(nameof(WriteData), 300.0f, 300.0f);
         }
     }
 
@@ -87,21 +93,15 @@ public class GameDataManager : MonoBehaviour
 
     public void CreateDirectoryAndFile(string directoryPath, string filePath)
     {
-        didCreateFileDirectory = true;
-
         if ((!File.Exists(filePath) && !Directory.Exists(directoryPath)))
         {
             Directory.CreateDirectory(directoryPath);
 
-            File.Create(filePath);
+            File.Create(filePath).Dispose();
         }
         else if (!File.Exists(filePath))
         {
-            File.Create(filePath);
-        }
-        else
-        {
-            didCreateFileDirectory = false;
+            File.Create(filePath).Dispose();
         }
     }
 }
