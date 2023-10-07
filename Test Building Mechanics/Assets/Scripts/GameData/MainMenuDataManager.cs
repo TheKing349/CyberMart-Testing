@@ -26,12 +26,12 @@ public class MainMenuDataManager : MonoBehaviour
 
         settingsDirectoryPath = Application.persistentDataPath + Path.DirectorySeparatorChar + "Settings" + Path.DirectorySeparatorChar;
         settingsDataFilePath = settingsDirectoryPath + "settings.json";
-        CreateDirectoryAndFile(settingsDirectoryPath, settingsDataFilePath);
+        CreateDirectoryAndFile(settingsDirectoryPath, settingsDataFilePath, "{}");
     }
 
     private void Start()
     {
-        if (File.ReadAllText(settingsDataFilePath) != "")
+        if (File.ReadAllText(settingsDataFilePath) != "{}")
         {
             settingsDataHandlerScript.LoadSettings();
         }
@@ -47,17 +47,19 @@ public class MainMenuDataManager : MonoBehaviour
         settingsDataHandlerScript.settingsData = JsonConvert.DeserializeObject<SettingsData>(File.ReadAllText(settingsDataFilePath), serializerSettings);
     }
 
-    public void CreateDirectoryAndFile(string directoryPath, string filePath)
+    public void CreateDirectoryAndFile(string directoryPath, string filePath, string writeIn = "")
     {
         if ((!File.Exists(filePath) && !Directory.Exists(directoryPath)))
         {
             Directory.CreateDirectory(directoryPath);
 
             File.Create(filePath).Dispose();
+            File.WriteAllText(filePath, writeIn);
         }
         else if (!File.Exists(filePath))
         {
             File.Create(filePath).Dispose();
+            File.WriteAllText(filePath, writeIn);
         }
     }
 }
