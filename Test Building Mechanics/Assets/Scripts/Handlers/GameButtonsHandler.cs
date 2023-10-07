@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class GameButtonsHandler : MonoBehaviour
 {
+    public SettingsButtonsHandler SettingsButtonsHandlerScript;
     public GameDataManager gameDataManagerScript;
     public GameTimeScale gameTimeScaleScript;
 
@@ -25,6 +26,8 @@ public class GameButtonsHandler : MonoBehaviour
 
     public void QuitToMenu()
     {
+        Time.timeScale = 1.0f;
+        SettingsButtonsHandlerScript.SaveAndApplyButton();
         gameDataManagerScript.WriteData();
 
         SceneManager.LoadScene(0);
@@ -32,6 +35,7 @@ public class GameButtonsHandler : MonoBehaviour
 
     public void QuitGame()
     {
+        SettingsButtonsHandlerScript.SaveAndApplyButton();
         gameDataManagerScript.WriteData();
 
         Application.Quit();

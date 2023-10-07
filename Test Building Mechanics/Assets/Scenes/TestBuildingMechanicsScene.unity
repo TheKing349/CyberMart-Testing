@@ -7317,6 +7317,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c373fd4cc4070ff46b9e13ed0b2a9bff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SettingsButtonsHandlerScript: {fileID: 1276113749}
   gameDataManagerScript: {fileID: 1276113738}
   gameTimeScaleScript: {fileID: 1276113737}
   pauseMenuCanvas: {fileID: 1840578703}
@@ -7393,6 +7394,7 @@ MonoBehaviour:
   previousPrefabImage: {fileID: 1054425944}
   currentPrefabImage: {fileID: 448199807}
   nextPrefabImage: {fileID: 1743500825}
+  currentPrefabInt: 0
 --- !u!114 &1276113745
 MonoBehaviour:
   m_ObjectHideFlags: 0

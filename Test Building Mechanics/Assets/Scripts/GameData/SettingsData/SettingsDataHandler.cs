@@ -14,8 +14,8 @@ public class SettingsDataHandler : MonoBehaviour
 
     public TMP_Dropdown qualityDropdown;
 
-    [HideInInspector] public SettingsData settingsData;
-    [HideInInspector] public int qualityLevel;
+    [HideInInspector] public SettingsData settingsData = new SettingsData();
+    [HideInInspector] public int qualityLevel = -1;
     public Dictionary<string, KeyCode> keybindsDictionary = new Dictionary<string, KeyCode>();
 
     public void SaveSettings()
